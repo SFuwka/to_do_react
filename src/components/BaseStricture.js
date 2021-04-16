@@ -21,11 +21,7 @@ import { darkMode, sideBarOpen, toggleDarkMode, toggleSideBar } from '../feature
 import { NavLink } from 'react-router-dom';
 import Copyright from './footer/Copyright';
 import ContentSwitch from './content/ContentSwitch';
-
-
-
-
-
+import AuthButton from './Auth/AuthButton';
 
 export default function BaseStricture() {
     const classes = useStyles();
@@ -54,7 +50,12 @@ export default function BaseStricture() {
                     <IconButton onClick={() => dispatch(toggleDarkMode())}>
                         {darkTheme ? <Brightness3Icon /> : <Brightness7Icon />}
                     </IconButton>
-                    <NavLink className={classes.loginButton} to='/login'>Login</NavLink>
+                    <div style={{ minWidth: 90 }}>
+                        <NavLink className={classes.loginButton} to='/login'>
+                            <AuthButton />
+                        </NavLink>
+                    </div>
+
                 </Toolbar>
             </AppBar>
             <Drawer

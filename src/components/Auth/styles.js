@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core"
 
 export const useStyles = makeStyles((theme) => ({
-   
+
     image: {
         backgroundImage: 'url(https://source.unsplash.com/random)',
         backgroundRepeat: 'no-repeat',
@@ -44,7 +44,7 @@ export const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-    SubmitButton:{
+    SubmitButton: {
         display: 'block',
         margin: '0 auto'
     },

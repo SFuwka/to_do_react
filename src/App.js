@@ -1,33 +1,27 @@
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router } from "react-router-dom";
+import { dark, light } from './AppTheme';
 import BaseStructure from './components/BaseStricture';
+import { authMe, isAuthorized } from './features/auth/authSlice';
 import { darkMode } from './features/theme/themeSlice';
 
 function App() {
   const theme = useSelector(darkMode)
-  const dark = createMuiTheme({
-    palette: {
-      type: 'dark',
-      text: {
-        primary: '#ffffff'
-      }
-    },
-    background: '#424242'
+  const darkTheme = createMuiTheme(dark)
+  const lightTheme = createMuiTheme(light)
+  const dispatch = useDispatch()
+  const auth = useSelector(isAuthorized)
+
+  useEffect(() => {
+    if (!auth) {
+      dispatch(authMe())
+    }
   })
 
-  const light = createMuiTheme({
-    palette: {
-      type: 'light',
-      text: {
-        primary: '#000000'
-      }
-    },
-    background: '#ffffff'
-  })
   return (
-    <ThemeProvider theme={theme ? dark : light}>
+    <ThemeProvider theme={theme ? darkTheme : lightTheme}>
       <Router>
         <BaseStructure />
       </Router>

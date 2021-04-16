@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import authApi from './apiCalls';
+import { authMe } from './authSlice';
 
 export const loginSlice = createSlice({
     name: 'login',
@@ -8,6 +10,9 @@ export const loginSlice = createSlice({
         error: null
     },
     reducers: {
+        pending: state => {
+            state.pending = true
+        },
         success: state => {
             state.pending = false
             state.loginSuccess = true
@@ -23,17 +28,25 @@ export const loginSlice = createSlice({
     }
 })
 
-export const { success, failure, clearError } = loginSlice.actions
+export const { success, failure, clearError, pending } = loginSlice.actions
 
 //selectors
 export const loginSuccess = state => state.login.loginSuccess
-export const pending = state => state.login.pending
+export const progress = state => state.login.pending
+export const error = state => state.login.error
 
 //thunks
 export const login = (email, password, rememberMe) => (dispatch) => {
-    debugger
-    dispatch(success())
-    console.log(email,password,rememberMe)
+    dispatch(pending())
+    authApi.login(email, password, rememberMe).then(res => {
+        console.log(res)
+        dispatch(success())
+        dispatch(authMe())
+    }).catch(err => {
+        console.log(err.response.data)
+        dispatch(failure(err.response.data))
+    })
 }
+
 
 export default loginSlice.reducer;

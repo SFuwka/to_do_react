@@ -8,11 +8,11 @@ const authApi = {
     logout() {
         return axiosInstance.delete('login')
     },
-    login(email, password) {
-        return axiosInstance.post('login', { email, password }).then(response => response.data)
+    login(email, password, rememberMe) {
+        return axiosInstance.post('login', { email, password, rememberMe }).then(response => response.data)
     },
-    signUp(name, surname, email, password) {
-        return axiosInstance.post('signup', { name, surname, email, password }, { withCredentials: false })
+    signUp(name, surname, alias, email, password) {
+        return axiosInstance.post('signup', { name, surname, alias, email, password }, { withCredentials: false })
     }
 }
 

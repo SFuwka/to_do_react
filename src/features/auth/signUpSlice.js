@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import authApi from './apiCalls';
 
 
 export const signUpSlice = createSlice({
@@ -6,9 +7,12 @@ export const signUpSlice = createSlice({
     initialState: {
         pending: false,
         signUpSuccess: false,
-        error: null
+        error: null,
     },
     reducers: {
+        pending: state => {
+            state.pending = true
+        },
         success: state => {
             state.pending = false
             state.signUpSuccess = true
@@ -24,9 +28,23 @@ export const signUpSlice = createSlice({
     }
 })
 
-export const { success, failure, clearError } = loginSlice.actions
+export const { success, failure, clearError, pending } = signUpSlice.actions
 
 //selectors
-export const loginSuccess = state => state.signUp.loginSuccess
+export const signUpSuccess = state => state.signUp.signUpSuccess
+export const progress = state => state.signUp.pending
+export const error = state => state.signUp.error
 
 //thunks
+export const signUp = (name, surname, alias, email, password) => (dispatch) => {
+    console.log(name, surname, alias, email, password)
+    dispatch(pending())
+    authApi.signUp(name, surname, alias, email, password).then(res => {
+        console.log(res)
+        dispatch(success())
+    }).catch(err => {
+        dispatch(failure(err.response.data))
+    })
+}
+
+export default signUpSlice.reducer

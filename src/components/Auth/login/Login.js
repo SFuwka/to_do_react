@@ -8,19 +8,26 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { useStyles } from '../styles';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { authLink } from '../../commonStyles';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, pending } from '../../../features/auth/loginSlice';
-import { composeValidators, isValidEmail, requiredEmail, requiredPassword } from '../../../features/auth/validators';
+import { login, progress, error, clearError } from '../../../features/auth/loginSlice';
+import { composeValidators, isValidEmail, requiredEmail, requiredPassword } from '../../form/validators';
 import { CheckBox, Input } from '../../form/fields';
 import SubmitButton from '../SubmitButton';
+import { isAuthorized } from '../../../features/auth/authSlice';
+
 
 
 const LoginForm = (props) => {
     const classes = useStyles()
-    const progress = useSelector(pending)
+    const dispatch = useDispatch()
+    const pending = useSelector(progress)
+    const serverError = useSelector(error)
 
+    const clearErr = () => {
+        dispatch(clearError())
+    }
     return (
         <form onSubmit={props.handleSubmit} className={classes.form}>
             <div>
@@ -32,6 +39,8 @@ const LoginForm = (props) => {
                     component={Input}
                     autoFocus={true}
                     fullWidth={true}
+                    err={serverError}
+                    clearError={clearErr}
                 >
                 </Field>
             </div>
@@ -45,10 +54,12 @@ const LoginForm = (props) => {
                     name='password'
                     component={Input}
                     fullWidth={true}
+                    err={serverError}
+                    clearError={clearErr}
                 >
                 </Field>
             </div>
-            
+
             <div>
                 <FormControlLabel label='Remember me' control={
                     <Field
@@ -59,7 +70,7 @@ const LoginForm = (props) => {
                 }>
                 </FormControlLabel>
             </div>
-            <SubmitButton buttonText='Login' progress={progress}></SubmitButton>
+            <SubmitButton buttonText='Login' progress={pending}></SubmitButton>
         </form>
 
 
@@ -70,10 +81,16 @@ const LoginForm = (props) => {
 const Login = () => {
     const classes = useStyles();
     const dispatch = useDispatch()
+    const isAuth = useSelector(isAuthorized)
+
+    if (isAuth) {
+        return <Redirect to='/' />
+    }
 
     const onSubmit = (values) => {
-        dispatch(login(values.email, values.password, values.rememberMe))
+        dispatch(login(values.email, values.password, values.rememberMe || false))
     }
+
 
     return (
         <Grid container component="main" className={classes.root}>
