@@ -39,7 +39,6 @@ export const error = state => state.login.error
 export const login = (email, password, rememberMe) => (dispatch) => {
     dispatch(pending())
     authApi.login(email, password, rememberMe).then(res => {
-        console.log(res)
         dispatch(success())
         dispatch(authMe())
     }).catch(err => {

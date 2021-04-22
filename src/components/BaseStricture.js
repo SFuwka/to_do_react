@@ -14,7 +14,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
-import { mainListItems, secondaryListItems } from './sideBar/listItems';
+import { MainListItems, secondaryListItems } from './sideBar/listItems';
 import { useStyles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { darkMode, sideBarOpen, toggleDarkMode, toggleSideBar } from '../features/theme/themeSlice';
@@ -72,7 +72,7 @@ export default function BaseStricture() {
                 </div>
 
                 <Divider />
-                <List>{mainListItems}</List>
+                <List><MainListItems/></List>
                 <Divider />
                 <List>{secondaryListItems}</List>
             </Drawer>
@@ -89,5 +89,5 @@ export default function BaseStricture() {
                 </Box>
             </main>
         </div>
-    );
+    )
 }

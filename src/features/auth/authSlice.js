@@ -5,7 +5,7 @@ import authApi from './apiCalls';
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        isFetching: false,
+        isFetching: true,
         isAuthorized: false,
         userId: null,
         error: null
@@ -39,6 +39,7 @@ export const { success, failure, clearError, pending, notAuthorized } = authSlic
 //selectors
 export const isFetching = state => state.auth.isFetching
 export const isAuthorized = state => state.auth.isAuthorized
+export const authUserId = state => state.auth.userId
 
 //thunks
 export const authMe = () => dispatch => {

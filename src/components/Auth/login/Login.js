@@ -83,8 +83,8 @@ const Login = () => {
     const dispatch = useDispatch()
     const isAuth = useSelector(isAuthorized)
 
-    if (isAuth) {
-        return <Redirect to='/' />
+    if(isAuth){
+        return <Redirect to='/'/>
     }
 
     const onSubmit = (values) => {

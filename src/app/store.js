@@ -3,6 +3,7 @@ import themeReducer from '../features/theme/themeSlice'
 import loginReducer from '../features/auth/loginSlice'
 import signUpReducer from '../features/auth/signUpSlice'
 import authReducer from '../features/auth/authSlice'
+import projectReducer from '../features/project/projectSlice'
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     login: loginReducer,
     signUp: signUpReducer,
     auth: authReducer,
+    project: projectReducer,
   },
 });

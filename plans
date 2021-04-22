@@ -1,4 +1,25 @@
 add alert when account created
-clear account created after some time 15min?
+clear (account created) after some time 15min?
 forgot password feature
-rememberMe feature
+rememberMe feature (+- ready)
+create new project (toDo local state in categoryMenu)
+delete project
+update project
+get projectS
+get project
+project settings (privacy)
+project image with cropper.js
+search projectS
+filter projects (total task's count, total unresolved tasks count, creation time) 
+get tasks
+get task
+create task
+task image with cropper.js
+update task (mark task as complete)
+delete task
+total time to resolve task(tasks)
+get users
+get user
+update myProfile
+category storage()
+...

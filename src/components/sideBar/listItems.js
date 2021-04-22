@@ -9,19 +9,21 @@ import HomeIcon from '@material-ui/icons/Home';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { NavLink } from 'react-router-dom';
 import { linkStyle } from '../commonStyles';
+import useNotAuth from '../../hooks/useNotAuth';
 
 
 
-export const mainListItems = (
-  <div>
-    <NavLink style={linkStyle} to='/home'>
-      <ListItem button>
-        <ListItemIcon>
-          <HomeIcon />
-        </ListItemIcon>
-        <ListItemText primary="Home" />
-      </ListItem>
-    </NavLink>
+
+export const MainListItems = () => {
+  const notAuth = useNotAuth()
+  const authOnlyItems = <><NavLink style={linkStyle} to='/home'>
+    <ListItem button>
+      <ListItemIcon>
+        <HomeIcon />
+      </ListItemIcon>
+      <ListItemText primary="Home" />
+    </ListItem>
+  </NavLink>
     <NavLink style={linkStyle} to='/projects'>
       <ListItem button>
         <ListItemIcon>
@@ -29,17 +31,23 @@ export const mainListItems = (
         </ListItemIcon>
         <ListItemText primary="Projects" />
       </ListItem>
-    </NavLink>
-    <NavLink style={linkStyle} to='/users'>
-      <ListItem button>
-        <ListItemIcon>
-          <PeopleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Users" />
-      </ListItem>
-    </NavLink>
-  </div>
-);
+    </NavLink></>
+  return (
+    <div>
+      {!notAuth ? authOnlyItems : ''}
+      <NavLink style={linkStyle} to='/users'>
+        <ListItem button>
+          <ListItemIcon>
+            <PeopleIcon />
+          </ListItemIcon>
+          <ListItemText primary="Users" />
+        </ListItem>
+      </NavLink>
+    </div>
+  )
+}
+
+
 
 export const secondaryListItems = (
   <div>
