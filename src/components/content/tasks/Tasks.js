@@ -13,15 +13,15 @@ const Tasks = ({ projectId }) => {
         <>
             <TopControll createNewText='New Task' listText='Tasks' open={newTaskMenuOpen} toggleOpen={handleToggleMenuOpen} />
 
-            <NewTask setNewTaskMenuOpen={setNewTaskMenuOpen} open={newTaskMenuOpen} />
+            <NewTask projectId={projectId} open={newTaskMenuOpen} />
 
-            
-                <h1>TASK</h1>
-                <h1>TASK</h1>
-                <h1>TASK</h1>
-                <h1>TASK</h1>
-                <h1>TASK</h1>
-          
+
+            <h1>TASK</h1>
+            <h1>TASK</h1>
+            <h1>TASK</h1>
+            <h1>TASK</h1>
+            <h1>TASK</h1>
+
 
         </>
 

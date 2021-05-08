@@ -155,13 +155,6 @@ export const useStyles = makeStyles((theme) => ({
             marginTop: theme.spacing(2)
         }
     },
-    colorPreview: {
-        minHeight: 50,
-        '& button': {
-            display: 'block',
-            margin: '0 auto'
-        },
-    },
     categorySearchResult: {
         minWidth: 200
     }

@@ -2,7 +2,7 @@ import axiosInstance from '../axiosSettings'
 
 const taskApi = {
 
-    newTask(task, projectId) {
+    newTask(projectId, task) {
         return axiosInstance.post(`projects/${projectId}/tasks`, task).then(response => response.data)
     },
     // getTasks(userId, page, count) {

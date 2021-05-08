@@ -1,6 +1,9 @@
 import { Button, Grid, IconButton, Paper, TextField } from '@material-ui/core'
 import SettingsIcon from '@material-ui/icons/Settings';
 import React, { useReducer, useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { createTask } from '../../../features/task/tasksSlice';
+import SettingsMenu from './settings/SettingsMenu';
 import { useStyles } from './styles'
 
 const initialState = {
@@ -28,10 +31,11 @@ const reducer = (state, action) => {
     }
 }
 
-const NewTask = ({ open }) => {
+const NewTask = ({ projectId, open }) => {
     const classes = useStyles()
     const [state, dispatchLocal] = useReducer(reducer, initialState)
     const [settingsMenuOpen, setSettingsMenuOpen] = useState(false)
+    const dispatch = useDispatch()
 
 
     const setTaskName = (e) => {
@@ -45,6 +49,14 @@ const NewTask = ({ open }) => {
         })
     }
 
+    const sendNewTask = () => {
+        if (!state.taskName) {
+            return dispatchLocal({ type: 'set_error', error: 'Field is required' })
+        }
+        dispatch(createTask(projectId, state))
+        dispatchLocal({ type: 'set_to_default' })
+    }
+
     return (
         <div className={classes.wrapper}>
             <Paper className={`${!open ? classes.hide : classes.newTaskMenu}`}>
@@ -55,13 +67,16 @@ const NewTask = ({ open }) => {
                             className={classes.newTaskInput}
                             onChange={setTaskName}
                             value={state.taskName}
+                            error={Boolean(state.error)}
+                            helperText={state.error}
                             variant='outlined'
                             label='Task'
                             placeholder='type new task'></TextField>
 
                         <div className={classes.buttonWrapper}>
-                            <Button className={classes.newTaskButton} variant='contained'>Create</Button>
+                            <Button onClick={sendNewTask} variant='contained'>Create</Button>
                         </div>
+
                     </div>
                     <div>
                         <IconButton onClick={toggleSettingsMenu}>
@@ -69,7 +84,9 @@ const NewTask = ({ open }) => {
                         </IconButton>
                     </div>
                 </Grid>
-                {settingsMenuOpen ? <Paper><h1>TEST</h1></Paper> : null}
+                <div className={classes.settings}>
+                    {settingsMenuOpen ? <SettingsMenu state={state} dispatch={dispatchLocal} /> : null}
+                </div>
             </Paper>
         </div >
 

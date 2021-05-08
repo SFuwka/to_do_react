@@ -31,7 +31,7 @@ export const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.standard,
         }),
-        '& .MuiGrid-container':{
+        '& .MuiGrid-container': {
             flexWrap: 'nowrap',
         }
     },
@@ -57,10 +57,12 @@ export const useStyles = makeStyles((theme) => ({
         }
     },
     buttonWrapper: {
-        display: 'flex',
         padding: theme.spacing(1),
         [theme.breakpoints.down('xs')]: {
             paddingLeft: 0
         },
     },
+    settings: {
+        marginTop: theme.spacing(2)
+    }
 }))
