@@ -6,8 +6,9 @@ import { useStyles } from '../styles'
 const categoryTest = ['IT', 'Guide', 'toDo list', 'time management', 'DIY', 'cleaning', 'cars', 'test1', 'test2', 'test3', 'test4', 'tes']
 
 const checkString = (expression, str) => {
-    const pattern = str.split("").map((x) => {
-        return `(?=.*${x})`
+    const pattern = str.split("").map((char) => {
+        if (char === "\\") return ''
+        return `(?=.*${char})`
     }).join("");
     const regex = new RegExp(`${pattern}`, "gi")
     return expression.match(regex);
@@ -22,9 +23,9 @@ const CategoryMenu = ({ state, dispatch }) => {
     const classes = useStyles()
     const clickAwayRef = useRef(null)
     const list = useRef(null)
-    useClickAway(clickAwayRef, (() => {
+    useClickAway(clickAwayRef, () => {
         setAnchorEl(null)
-    }))
+    })
 
     useEffect(
         () => {

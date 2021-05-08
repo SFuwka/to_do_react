@@ -2,11 +2,11 @@ add alert when account created
 clear (account created) after some time 15min?
 forgot password feature
 rememberMe feature (+- ready)
-create new project (toDo local state in categoryMenu)
+create new project +
 delete project
 update project
-get projectS
-get project
+get projectS +
+get project 
 project settings (privacy)
 project image with cropper.js
 search projectS

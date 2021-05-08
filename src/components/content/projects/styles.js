@@ -1,12 +1,11 @@
 import { fade, makeStyles } from "@material-ui/core"
-import { blueGrey } from "@material-ui/core/colors"
+import { blueGrey, green } from "@material-ui/core/colors"
 
 export const getContrastColor = (theme) => {
-    if (theme.palette.type === 'dark'){
+    if (theme.palette.type === 'dark') {
         return '#9eb0ba'
-    } 
+    }
     return '#C7E5FC'
-        
 }
 
 export const useStyles = makeStyles((theme) => ({
@@ -22,6 +21,12 @@ export const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
             fontSize: 10,
             padding: '6px 10px'
+        }
+    },
+    success: {
+        backgroundColor: green[500],
+        '&:hover': {
+            backgroundColor: green[700],
         }
     },
     searchIcon: {
@@ -67,14 +72,26 @@ export const useStyles = makeStyles((theme) => ({
     projects: {
         // position: 'absolute',
         transform: 'scale(1)',
-        transition: 'all .5s'
+        transition: 'all .5s',
+    },
+    menuItem: {
+        '&:not(:first-child)': {
+            marginTop: theme.spacing(2),
+        },
+    },
+    projectLink: {
+        display: 'block',
+        textDecoration: 'none',
+        color: 'inherit',
+        '&:hover': {
+            filter: 'brightness(90%)'
+        }
     },
     newProject: {
         transform: 'scale(1)',
         transition: 'all .5s'
     },
     hide: {
-        //position: 'absolute',
         width: 0,
         height: 0,
         visibility: 'hidden',
@@ -109,7 +126,6 @@ export const useStyles = makeStyles((theme) => ({
         }
     },
     createProjectWrapper: {
-        display: 'flex',
         '& button': {
             marginTop: 10,
             marginBottom: 10,
@@ -146,7 +162,7 @@ export const useStyles = makeStyles((theme) => ({
             margin: '0 auto'
         },
     },
-    categorySearchResult:{
+    categorySearchResult: {
         minWidth: 200
     }
 }))

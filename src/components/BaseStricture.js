@@ -72,14 +72,14 @@ export default function BaseStricture() {
                 </div>
 
                 <Divider />
-                <List><MainListItems/></List>
+                <List><MainListItems /></List>
                 <Divider />
                 <List>{secondaryListItems}</List>
             </Drawer>
             <main className={classes.content}>
-                <div className={classes.contentWraper}>
+                <div className={classes.contentWraper} >
                     <div className={classes.appBarSpacer} />
-                    <Container maxWidth="lg" className={classes.container}>
+                    <Container maxWidth="lg" className={classes.container} >
                         <ContentSwitch />
                     </Container>
                     <div className={classes.push}></div>

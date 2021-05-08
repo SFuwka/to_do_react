@@ -5,6 +5,7 @@ import ColorPicker from '../../../../pickers/ColorPicker';
 import { useStyles } from '../styles';
 import Modal from '../../../../commonComponents/Modal';
 import CategoryMenu from './CategoryMenu';
+import { getContrastColor } from '../../../../pickers/contrastColor';
 
 
 
@@ -17,7 +18,6 @@ const SettingsMenu = ({ state, dispatch }) => {
 
     const handleOpen = () => setColorPickerOpen(true)
     const handleClose = () => setColorPickerOpen(false)
-
 
     return (
         <Card>
@@ -37,7 +37,7 @@ const SettingsMenu = ({ state, dispatch }) => {
                     <Paper className={classes.settingsField}>
                         <Typography variant='subtitle1' component='h4'>Background color:</Typography>
                         <div className={classes.colorPreview} style={{ backgroundColor: state.color }}>
-                            <IconButton onClick={handleOpen}>
+                            <IconButton style={{ color: getContrastColor(state.color) }} onClick={handleOpen}>
                                 <PaletteIcon />
                             </IconButton>
                             <Modal open={colorPickerOpen} onClose={handleClose}>

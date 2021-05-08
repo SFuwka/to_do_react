@@ -37,10 +37,8 @@ export const error = state => state.signUp.error
 
 //thunks
 export const signUp = (name, surname, alias, email, password) => (dispatch) => {
-    console.log(name, surname, alias, email, password)
     dispatch(pending())
     authApi.signUp(name, surname, alias, email, password).then(res => {
-        console.log(res)
         dispatch(success())
     }).catch(err => {
         dispatch(failure(err.response.data))

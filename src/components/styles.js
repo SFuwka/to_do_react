@@ -34,9 +34,15 @@ export const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
+        [theme.breakpoints.down('xs')]: {
+            width: '100%'
+        },
     },
     menuButton: {
         marginRight: 36,
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        }
     },
     menuButtonHidden: {
         display: 'none',
@@ -52,6 +58,9 @@ export const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
+        [theme.breakpoints.down('xs')]: {
+            width: theme.spacing(7)
+        },
     },
     drawerPaperClose: {
         overflowX: 'hidden',
@@ -63,6 +72,7 @@ export const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up('sm')]: {
             width: theme.spacing(9),
         },
+        
     },
     appBarSpacer: theme.mixins.toolbar,
     content: {
@@ -71,14 +81,14 @@ export const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
         '&::-webkit-scrollbar': {
             width: '0.4em'
-          },
-          '&::-webkit-scrollbar-track': {
+        },
+        '&::-webkit-scrollbar-track': {
             boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
             webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
-          },
-          '&::-webkit-scrollbar-thumb': {
+        },
+        '&::-webkit-scrollbar-thumb': {
             backgroundColor: 'rgba(0,0,0,.3)',
-          }
+        }
     },
     container: {
         paddingTop: theme.spacing(4),
@@ -100,7 +110,7 @@ export const useStyles = makeStyles((theme) => ({
     footer: {
         height: 30
     },
-    push:{
+    push: {
         height: 30
     }
 }))
