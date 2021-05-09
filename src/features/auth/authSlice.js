@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { reset as projectsReset } from '../project/projectSlice';
 import authApi from './apiCalls';
 
 
@@ -61,6 +62,7 @@ export const logout = () => dispatch => {
     dispatch(pending())
     authApi.logout().then(() => {
         dispatch(notAuthorized())
+        dispatch(projectsReset())
     })
 }
 

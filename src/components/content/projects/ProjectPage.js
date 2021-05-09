@@ -1,16 +1,20 @@
-import { Typography } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
-import { activeProject, getProject, getProjectById, setActiveProject } from '../../../features/project/projectSlice'
+import { activeProject, clearError, error, getProject, getProjectById, setActiveProject } from '../../../features/project/projectSlice'
 import Tasks from '../tasks/Tasks'
 import Project from './Project'
 import ProjectSkeleton from './ProjectSkeleton'
+import LockIcon from '@material-ui/icons/Lock';
+import { NavLink } from 'react-router-dom'
+import { linkStyle } from '../../commonStyles'
 
 const ProjectPage = () => {
     const params = useParams()
     const dispatch = useDispatch()
     const project = useSelector(getProjectById(params.projectId))
+    const projectError = useSelector(error)
     const selectedProject = useSelector(activeProject)
     // console.log(selectedProject, params)
     useEffect(
@@ -20,7 +24,19 @@ const ProjectPage = () => {
         }, [params.projectId, project, dispatch]
     )
 
+    useEffect(() => {
+        return () => {
+            dispatch(clearError())
+        }
+    }, [dispatch])
 
+    if (projectError) return (
+        <>
+            <Typography>{projectError.message}</Typography>
+            <LockIcon style={{ fontSize: 50 }} />
+            <NavLink to='/home' style={linkStyle}><Button variant='contained'>Home</Button></NavLink>
+        </>
+    )
     if (!selectedProject) return <ProjectSkeleton />
     return (
         <>

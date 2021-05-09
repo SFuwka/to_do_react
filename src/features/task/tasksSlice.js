@@ -48,6 +48,7 @@ export const isFetching = state => state.task.pending
 //thunks
 export const createTask = (projectId, task) => dispatch => {
     dispatch(pending(CREATE))
+    console.log(projectId,task)
     taskApi.newTask(projectId,task).then(res => {
         console.log(res)
     })

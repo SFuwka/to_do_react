@@ -2,23 +2,24 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { CREATE, DELETE, PROJECTS_LOADING } from '../actions';
 import projectApi from './apiCalls';
 
+const initialState = {
+    pending: {
+        create: false,
+        projectsLoading: false,
+        delete: [], //contains project id's that currently in delete progress
+    },
+    activeProject: null,
+    projectsPage: 0,
+    projects: [],
+    error: null,
+    isFetched: false,
+    projectCreated: false
+}
 
 
 export const projectSlice = createSlice({
     name: 'project',
-    initialState: {
-        pending: {
-            create: false,
-            projectsLoading: false,
-            delete: [], //contains project id's that currently in delete progress
-        },
-        activeProject: null,
-        projectsPage: 0,
-        projects: [],
-        error: null,
-        isFetched: false,
-        projectCreated: false
-    },
+    initialState,
     reducers: {
         pending: (state, action) => {
             if (action.payload.action === DELETE) {
@@ -55,20 +56,21 @@ export const projectSlice = createSlice({
         },
         failure: (state, action) => {
             state.error = action.payload
-            state.pending = false
         },
         clearError: state => {
             state.error = null
-        }
+        },
+        reset: () => initialState
     }
 })
 
 export const { setProjects, addProjectToBegining, failure, clearError,
     pending, setActiveProject, stopPending, firstLoadComplete, projectCreatedStatusToDefault,
-    deleteProject } = projectSlice.actions
+    deleteProject, reset } = projectSlice.actions
 
 //selectors
 export const projects = state => state.project.projects
+export const error = state => state.project.error
 export const getProjectById = projectId => {
     return createSelector(projects, (projects) => {
         return projects.find(project => project._id === projectId)
@@ -83,6 +85,7 @@ export const projectCreated = state => state.project.projectCreated
 //thunks
 export const createProject = project => dispatch => {
     dispatch(pending({ action: CREATE }))
+    console.log(project)
     projectApi.newProject(project).then((res) => {
         dispatch(addProjectToBegining(res.project))
         dispatch(stopPending({ action: CREATE }))
@@ -120,6 +123,9 @@ export const getProject = projectId => dispatch => {
         dispatch(stopPending({ action: PROJECTS_LOADING }))
         dispatch(setActiveProject(res.data.project))
         console.log('project recived')
+    }).catch(err => {
+        dispatch(failure(err.response.data))
+        dispatch(stopPending({ action: PROJECTS_LOADING }))
     })
 }
 

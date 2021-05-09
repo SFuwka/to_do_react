@@ -11,9 +11,9 @@ const Project = ({ project }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const pending = useSelector(isFetching)
+
     const history = useHistory()
     // console.log(history)
-
     const handleDeleteProject = (e) => {
         dispatch(removeProject(e.currentTarget.id))
         history.replace('/projects')
@@ -26,7 +26,8 @@ const Project = ({ project }) => {
         <Card className={classes.menuItem}>
             <CardHeader
                 title={history.location.pathname !== `/projects/${project._id}` ? // if pathName /projects/:id NavLink disabled ToDo
-                    <NavLink style={{ backgroundColor: project.color, color: project.color ? getContrastColor(project.color) : '' }} className={classes.projectLink} to={`/projects/${project._id}`}>
+                    <NavLink style={{ backgroundColor: project.color, color: project.color ? getContrastColor(project.color) : '' }}
+                        className={classes.projectLink} to={`/projects/${project._id}`}>
                         {project.projectName}
                     </NavLink> :
                     project.projectName
