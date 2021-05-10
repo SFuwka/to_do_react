@@ -21,6 +21,9 @@ const ProjectPage = () => {
         () => {
             dispatch(setActiveProject(project))
             if (!project) dispatch(getProject(params.projectId))
+            return () => {
+                dispatch(setActiveProject(null))
+            }
         }, [params.projectId, project, dispatch]
     )
 

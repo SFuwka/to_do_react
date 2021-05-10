@@ -64,5 +64,26 @@ export const useStyles = makeStyles((theme) => ({
     },
     settings: {
         marginTop: theme.spacing(2)
+    },
+    taskContainer: {
+        marginTop: theme.spacing(2),
+    },
+    confirmDeleteModal: {
+        minWidth: 160,
+        '& p': {
+            padding: theme.spacing(1)
+        },
+        '& button': {
+            margin: theme.spacing(1)
+        },
+    },
+    taskMenu: {
+        '& li': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            '& svg': {
+                marginLeft: theme.spacing(1)
+            }
+        }
     }
 }))

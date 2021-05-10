@@ -28,7 +28,7 @@ const SettingsMenu = ({ state, dispatch }) => {
                 <Typography variant='subtitle1' component='h4'>Category:</Typography>
                 <CategoryMenu state={state} dispatch={dispatch} />
             </>
-            
+
 
         </SettingsWrapper>
 

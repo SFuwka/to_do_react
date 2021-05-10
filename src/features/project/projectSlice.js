@@ -117,12 +117,10 @@ export const getProjects = (userId, page, count) => dispatch => {
 }
 
 export const getProject = projectId => dispatch => {
-    console.log('geting project', projectId)
     dispatch(pending({ action: PROJECTS_LOADING }))
     projectApi.getProject(projectId).then(res => {
         dispatch(stopPending({ action: PROJECTS_LOADING }))
         dispatch(setActiveProject(res.data.project))
-        console.log('project recived')
     }).catch(err => {
         dispatch(failure(err.response.data))
         dispatch(stopPending({ action: PROJECTS_LOADING }))

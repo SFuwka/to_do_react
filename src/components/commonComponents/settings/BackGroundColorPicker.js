@@ -18,7 +18,7 @@ const BackGroundColorPicker = ({ state, dispatch }) => {
                 <IconButton style={{ color: getContrastColor(state.color) }} onClick={handleOpen}>
                     <PaletteIcon />
                 </IconButton>
-                <Modal open={colorPickerOpen} onClose={handleClose}>
+                <Modal style={{ marginLeft: '64px' }} open={colorPickerOpen} onClose={handleClose}>
                     <ColorPicker state={state} dispatch={dispatch} />
                 </Modal>
             </div>

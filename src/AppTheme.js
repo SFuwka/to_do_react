@@ -5,9 +5,10 @@ export const dark = {
         type: 'dark',
         text: {
             primary: '#ffffff'
-        }
+        },
+        
     },
-    background: '#424242'
+
 }
 
 export const light = {
@@ -15,7 +16,10 @@ export const light = {
         type: 'light',
         text: {
             primary: '#000000'
+        },
+        background: {
+            default: '#eaeaea'
         }
     },
-    background: '#ffffff'
 }
+

@@ -13,8 +13,14 @@ export const useStyles = makeStyles((theme) => ({
     modalContainer: {
         padding: theme.spacing(2),
         top: '50%',
-        left: '50%',
+        left: 'calc(50% + 36px)',
         position: 'fixed',
         transform: 'translate(-50%,-50%)',
-    }
+    },
+    sideBarOpen:{
+        left: 'calc(50% + 120px)',
+    },
+    sideBarClose:{
+        left: 'calc(50% + 36px)',
+    },
 }))
