@@ -1,4 +1,4 @@
-import { Button, Card, CardHeader, IconButton, Menu, MenuItem, Paper, Typography } from '@material-ui/core'
+import { Button, Card, CardHeader, IconButton, Menu, MenuItem, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { useStyles } from './styles';
@@ -7,11 +7,16 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import DoneIcon from '@material-ui/icons/Done';
 import Modal from '../../../commonComponents/Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { isFetching, removeTask } from '../../../features/task/tasksSlice';
 
-const Task = ({ task }) => {
+const Task = ({ projectId, task }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
+    const [taskToDelete, setTaskToDelete] = useState(null)
+    const pending = useSelector(isFetching)
     const classes = useStyles()
+    const dispatch = useDispatch()
     const bgColor = task.color ? getContrastColor(task.color) : ''
 
     const handleOpen = (event) => {
@@ -23,9 +28,15 @@ const Task = ({ task }) => {
     }
 
     const handleDelete = (e) => {
-        console.log(e.currentTarget)
+        console.log(e.currentTarget.id)
+        setTaskToDelete(e.currentTarget.id)
         setDeleteConfirmOpen(true)
         handleClose()
+    }
+
+    const confirmDelete = () => {
+        dispatch(removeTask(projectId, taskToDelete))
+        closeConfirmWindow()
     }
 
     const closeConfirmWindow = () => setDeleteConfirmOpen(false)
@@ -53,7 +64,7 @@ const Task = ({ task }) => {
                                 transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                             >
                                 <MenuItem onClick={handleClose}>Edit <EditIcon /></MenuItem>
-                                <MenuItem id={task._id} onClick={handleDelete}>Delete <DeleteForeverIcon /></MenuItem>
+                                <MenuItem disabled={pending.delete.some(id => id === task._id)} id={task._id} onClick={handleDelete}>Delete <DeleteForeverIcon /></MenuItem>
                                 <MenuItem onClick={handleClose}>Complete <DoneIcon /></MenuItem>
                             </Menu>
                         </>
@@ -64,7 +75,7 @@ const Task = ({ task }) => {
                 <div className={classes.confirmDeleteModal}>
                     <div><Typography align='center'>Are you sure?</Typography></div>
                     <div>
-                        <Button variant='contained' color='primary'>yes</Button>
+                        <Button variant='contained' color='primary' onClick={confirmDelete}>yes</Button>
                         <Button variant='contained' color='secondary' onClick={closeConfirmWindow}>no</Button>
                     </div>
                 </div>

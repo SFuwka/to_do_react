@@ -38,7 +38,7 @@ const Tasks = ({ projectId, editable }) => {
             <NewTask projectId={projectId} open={newTaskMenuOpen} />
             {tasks.map((task, i) => {
                 return (
-                    <Task key={i} task={task} />
+                    <Task key={i} projectId={projectId} task={task} />
                 )
             })}
 
