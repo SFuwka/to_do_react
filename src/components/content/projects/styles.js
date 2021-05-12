@@ -70,14 +70,11 @@ export const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2)
     },
     projects: {
-        // position: 'absolute',
         transform: 'scale(1)',
         transition: 'all .5s',
     },
     menuItem: {
-        '&:not(:first-child)': {
-            marginTop: theme.spacing(2),
-        },
+        marginTop: theme.spacing(2),
     },
     projectLink: {
         display: 'block',

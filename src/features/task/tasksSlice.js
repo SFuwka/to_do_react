@@ -6,9 +6,11 @@ const initialState = {
     tasks: [],
     pending: {
         create: false,
+        tasksLoading: false,
         delete: [],
-        tasksLoading: false
-    }
+    },
+    isFetched: false,
+    error: null
 }
 
 
@@ -30,6 +32,9 @@ export const taskSlice = createSlice({
             }
             state.pending[action.payload.action] = false
         },
+        firstLoadComplete: state => {
+            state.isFetched = true
+        },
         setTasks: (state, action) => {
             state.tasks = [...state.tasks, ...action.payload]
         },
@@ -43,28 +48,32 @@ export const taskSlice = createSlice({
     }
 })
 
-export const { pending, stopPending, setTasks, addTaskToBegining, deleteTask, reset } = taskSlice.actions
+export const { pending, stopPending, setTasks, addTaskToBegining, deleteTask, reset, firstLoadComplete } = taskSlice.actions
 
 //selectors
 export const isFetching = state => state.task.pending
 export const tasks = state => state.task.tasks
+export const error = state => state.task.error
+export const isFetched = state => state.task.isFetched
 
 //thunks
 export const createTask = (projectId, task) => dispatch => {
-    dispatch(pending(CREATE))
-    // console.log(projectId, task)
+    dispatch(pending({ action: CREATE }))
     taskApi.newTask(projectId, task).then(res => {
         dispatch(addTaskToBegining(res.task))
-        dispatch(stopPending(CREATE))
+        dispatch(stopPending({ action: CREATE }))
     })
 }
 
 export const getTasks = (projectId) => dispatch => {
-    dispatch(pending(TASKS_LOADING))
+    dispatch(pending({ action: TASKS_LOADING }))
     taskApi.getTasks(projectId).then(res => {
+        dispatch(firstLoadComplete())
         if (res.data.tasks) {
             dispatch(setTasks(res.data.tasks))
-            dispatch(stopPending(TASKS_LOADING))
+            dispatch(stopPending({ action: TASKS_LOADING }))
+        } else {
+            dispatch(stopPending({ action: TASKS_LOADING }))
         }
     })
 }

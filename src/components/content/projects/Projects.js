@@ -55,7 +55,6 @@ const Projects = () => {
                 <div className={`${classes.newProject} ${!newProjectMenuOpen ? classes.hide : ''}`}>
                     <NewProject setNewProjectMenuOpen={setNewProjectMenuOpen} /></div>
             </div>
-
         </>
     )
 }

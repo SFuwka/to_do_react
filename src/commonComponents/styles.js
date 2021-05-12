@@ -17,10 +17,19 @@ export const useStyles = makeStyles((theme) => ({
         position: 'fixed',
         transform: 'translate(-50%,-50%)',
     },
-    sideBarOpen:{
+    sideBarOpen: {
         left: 'calc(50% + 120px)',
     },
-    sideBarClose:{
+    sideBarClose: {
         left: 'calc(50% + 36px)',
     },
+    confirmDeleteModal: {
+        minWidth: 160,
+        '& p': {
+            padding: theme.spacing(1)
+        },
+        '& button': {
+            margin: theme.spacing(1)
+        },
+    }
 }))

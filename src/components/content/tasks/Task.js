@@ -1,4 +1,4 @@
-import { Button, Card, CardHeader, IconButton, Menu, MenuItem, Typography } from '@material-ui/core'
+import { Card, CardHeader, IconButton, Menu, MenuItem } from '@material-ui/core'
 import React, { useState } from 'react'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { useStyles } from './styles';
@@ -9,6 +9,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import Modal from '../../../commonComponents/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { isFetching, removeTask } from '../../../features/task/tasksSlice';
+import ConfirmWindow from '../../../commonComponents/ConfirmWindow';
 
 const Task = ({ projectId, task }) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -28,7 +29,6 @@ const Task = ({ projectId, task }) => {
     }
 
     const handleDelete = (e) => {
-        console.log(e.currentTarget.id)
         setTaskToDelete(e.currentTarget.id)
         setDeleteConfirmOpen(true)
         handleClose()
@@ -64,7 +64,8 @@ const Task = ({ projectId, task }) => {
                                 transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                             >
                                 <MenuItem onClick={handleClose}>Edit <EditIcon /></MenuItem>
-                                <MenuItem disabled={pending.delete.some(id => id === task._id)} id={task._id} onClick={handleDelete}>Delete <DeleteForeverIcon /></MenuItem>
+                                <MenuItem disabled={pending.delete.some(id => id === task._id)} id={task._id}
+                                    onClick={handleDelete}>Delete <DeleteForeverIcon /></MenuItem>
                                 <MenuItem onClick={handleClose}>Complete <DoneIcon /></MenuItem>
                             </Menu>
                         </>
@@ -72,13 +73,7 @@ const Task = ({ projectId, task }) => {
                 />
             </Card>
             <Modal open={deleteConfirmOpen} onClose={closeConfirmWindow}>
-                <div className={classes.confirmDeleteModal}>
-                    <div><Typography align='center'>Are you sure?</Typography></div>
-                    <div>
-                        <Button variant='contained' color='primary' onClick={confirmDelete}>yes</Button>
-                        <Button variant='contained' color='secondary' onClick={closeConfirmWindow}>no</Button>
-                    </div>
-                </div>
+                <ConfirmWindow onConfirm={confirmDelete} onClose={closeConfirmWindow} />
             </Modal>
         </>
     )
