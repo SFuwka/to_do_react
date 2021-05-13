@@ -44,10 +44,22 @@ export const taskSlice = createSlice({
             state.editMode = [...state.editMode, action.payload]
         },
         turnEditModeOff: (state, action) => {
+            console.log(action.payload)
             state.editMode = [...state.editMode.filter(id => id !== action.payload)]
         },
         addTaskToBegining: (state, action) => {
             state.tasks = [action.payload, ...state.tasks]
+        },
+        updateTask: (state, action) => {
+            let isFinded = false
+            state.tasks = state.tasks.map(task => {
+                if (!isFinded && task._id === action.payload._id) {
+                    isFinded = true
+                    return action.payload
+                }
+                return task
+            })
+
         },
         deleteTask: (state, action) => {
             state.tasks = state.tasks.filter(task => task._id !== action.payload)
@@ -57,7 +69,7 @@ export const taskSlice = createSlice({
 })
 
 export const { pending, stopPending, setTasks, addTaskToBegining, turnEditModeOn, turnEditModeOff,
-    deleteTask, reset, firstLoadComplete } = taskSlice.actions
+    deleteTask, updateTask, reset, firstLoadComplete } = taskSlice.actions
 
 //selectors
 export const isFetching = state => state.task.pending
@@ -91,7 +103,11 @@ export const getTasks = (projectId) => dispatch => {
 export const editTask = (projectId, taskId, task) => dispatch => {
     dispatch(pending({ action: EDIT, id: taskId }))
     taskApi.editTask(projectId, taskId, task).then(res => {
-        console.log(res)
+        if (res.data.task) {
+            dispatch(updateTask(res.data.task))
+            dispatch(stopPending({ action: EDIT, id: taskId }))
+            dispatch(turnEditModeOff(taskId))
+        }
     })
 }
 
