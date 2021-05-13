@@ -8,13 +8,15 @@ import EditIcon from '@material-ui/icons/Edit';
 import DoneIcon from '@material-ui/icons/Done';
 import Modal from '../../../commonComponents/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { isFetching, removeTask } from '../../../features/task/tasksSlice';
+import { isFetching, removeTask, taskEditMode, turnEditModeOn } from '../../../features/task/tasksSlice';
 import ConfirmWindow from '../../../commonComponents/ConfirmWindow';
+import EditModeTask from './EditModeTask';
 
 const Task = ({ projectId, task }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
     const [taskToDelete, setTaskToDelete] = useState(null)
+    const editMode = useSelector(taskEditMode)
     const pending = useSelector(isFetching)
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -39,11 +41,16 @@ const Task = ({ projectId, task }) => {
         closeConfirmWindow()
     }
 
+    const handleEdit = (e) => {
+        dispatch(turnEditModeOn(e.currentTarget.id))
+        handleClose()
+    }
+
     const closeConfirmWindow = () => setDeleteConfirmOpen(false)
 
     return (
         <>
-            <Card className={classes.taskContainer}>
+            {!editMode.some(id => id === task._id) ? <Card className={classes.taskContainer}>
                 <CardHeader
                     style={{ backgroundColor: task.color, color: bgColor }}
                     title={task.taskName}
@@ -63,7 +70,7 @@ const Task = ({ projectId, task }) => {
                                 anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                             >
-                                <MenuItem onClick={handleClose}>Edit <EditIcon /></MenuItem>
+                                <MenuItem onClick={handleEdit} id={task._id}>Edit <EditIcon /></MenuItem>
                                 <MenuItem disabled={pending.delete.some(id => id === task._id)} id={task._id}
                                     onClick={handleDelete}>Delete <DeleteForeverIcon /></MenuItem>
                                 <MenuItem onClick={handleClose}>Complete <DoneIcon /></MenuItem>
@@ -71,7 +78,8 @@ const Task = ({ projectId, task }) => {
                         </>
                     }
                 />
-            </Card>
+            </Card> : <EditModeTask projectId={projectId} task={task} />}
+
             <Modal open={deleteConfirmOpen} onClose={closeConfirmWindow}>
                 <ConfirmWindow onConfirm={confirmDelete} onClose={closeConfirmWindow} />
             </Modal>
