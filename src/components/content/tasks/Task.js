@@ -13,7 +13,7 @@ import ConfirmWindow from '../../../commonComponents/ConfirmWindow';
 import EditModeTask from './EditModeTask';
 
 const Task = ({ projectId, task }) => {
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(null)
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
     const [taskToDelete, setTaskToDelete] = useState(null)
     const editMode = useSelector(taskEditMode)
@@ -61,7 +61,6 @@ const Task = ({ projectId, task }) => {
                             </IconButton>
                             <Menu
                                 className={classes.taskMenu}
-                                id="simple-menu"
                                 anchorEl={anchorEl}
                                 keepMounted
                                 open={Boolean(anchorEl)}

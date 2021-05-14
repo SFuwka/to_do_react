@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { CREATE, DELETE, PROJECTS_LOADING } from '../actions';
+import { CREATE, DELETE, EDIT, PROJECTS_LOADING } from '../actions';
 import projectApi from './apiCalls';
 
 const initialState = {
@@ -11,6 +11,7 @@ const initialState = {
     activeProject: null,
     projectsPage: 0,
     projects: [],
+    editMode: [],
     error: null,
     isFetched: false,
     projectCreated: false
@@ -48,11 +49,28 @@ export const projectSlice = createSlice({
             state.projects = [action.payload, ...state.projects]
             state.projectCreated = true
         },
+        updateProject: (state, action) => {
+            let isFinded = false
+            state.projects = state.projects.map(project => {
+                if (!isFinded && project._id === action.payload._id) {
+                    isFinded = true
+                    return action.payload
+                }
+                return project
+            })
+
+        },
         projectCreatedStatusToDefault: state => {
             state.projectCreated = false
         },
         deleteProject: (state, action) => {
             state.projects = state.projects.filter(project => project._id !== action.payload)
+        },
+        turnEditModeOn: (state, action) => {
+            state.editMode = [...state.editMode, action.payload]
+        },
+        turnEditModeOff: (state, action) => {
+            state.editMode = [...state.editMode.filter(id => id !== action.payload)]
         },
         failure: (state, action) => {
             state.error = action.payload
@@ -64,9 +82,9 @@ export const projectSlice = createSlice({
     }
 })
 
-export const { setProjects, addProjectToBegining, failure, clearError,
+export const { setProjects, addProjectToBegining, updateProject, failure, clearError,
     pending, setActiveProject, stopPending, firstLoadComplete, projectCreatedStatusToDefault,
-    deleteProject, reset } = projectSlice.actions
+    deleteProject, turnEditModeOn, turnEditModeOff, reset } = projectSlice.actions
 
 //selectors
 export const projects = state => state.project.projects
@@ -80,6 +98,7 @@ export const activeProject = state => state.project.activeProject
 export const isFetching = state => state.project.pending
 export const isFetched = state => state.project.isFetched
 export const projectCreated = state => state.project.projectCreated
+export const projectEditMode = state => state.project.editMode
 
 
 //thunks
@@ -101,6 +120,17 @@ export const removeProject = projectId => dispatch => {
         dispatch(stopPending({ action: DELETE, id: projectId }))
     })
 
+}
+
+export const editProject = project => dispatch => {
+    dispatch(pending({ action: EDIT, id: project._id }))
+    projectApi.editProject(project).then(res => {
+        if (res.data.project) {
+            dispatch(updateProject(res.data.project))
+            dispatch(stopPending({ action: EDIT, id: project._id }))
+            dispatch(turnEditModeOff(project._id))
+        }
+    })
 }
 
 export const getProjects = (userId, page, count) => dispatch => {

@@ -17,7 +17,10 @@ const projectApi = {
     },
     deleteProject(projectId) {
         return axiosInstance.delete(`projects/${projectId}`)
-    }
+    },
+    editProject(project) {
+        return axiosInstance.put(`projects/${project._id}`, project)
+    },
 }
 
 export default projectApi

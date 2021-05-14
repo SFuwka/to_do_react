@@ -11,7 +11,7 @@ const initialState = {
     color: '',
     projectName: '',
     privacySettings: 'public',
-    category: '',
+    category: null,
     error: null,
 }
 
@@ -95,7 +95,7 @@ const NewProject = (props) => {
             >
             </CardHeader>
             <CardContent>
-                {settingsMenuOpen ? <SettingsMenu state={state} dispatch={dispatchLocal} /> : ''}
+                {settingsMenuOpen ? <SettingsMenu state={state} dispatch={dispatchLocal} /> : null}
                 <div className={classes.createProjectWrapper}>
                     <TextField
                         onFocus={e => e.target.select()}

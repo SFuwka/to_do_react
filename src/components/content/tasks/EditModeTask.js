@@ -4,6 +4,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { useDispatch } from 'react-redux'
 import { turnEditModeOff, editTask } from '../../../features/task/tasksSlice'
 import { useStyles } from './styles'
+import SettingsWrapper from '../../commonComponents/settings/SettingsWrapper';
+import BackGroundColorPicker from '../../commonComponents/settings/BackGroundColorPicker';
 
 let initialState = {}
 
@@ -50,32 +52,37 @@ const EditModeTask = ({ projectId, task }) => {
 
 
     return (
-        <Card className={classes.taskContainer}>
-            <CardHeader
-                title={
-                    <TextField
-                        onFocus={e => e.target.select()}
-                        className={classes.newTaskInput}
-                        error={Boolean(state.error)}
-                        helperText={state.error}
-                        label='Task'
-                        multiline
-                        onChange={setTaskName}
-                        value={state.taskName} />
-                }
-                action={
-                    <IconButton>
-                        <SettingsIcon />
-                    </IconButton>
-                }
-            />
-            <CardContent>
-                <>
-                    <Button id={task._id} onClick={saveChanges} variant='contained' color='primary'>save</Button>
-                    <Button id={task._id} onClick={cancelEdit} variant='contained' color='secondary'>cancel</Button>
-                </>
-            </CardContent>
-        </Card>
+        <>
+            <Card className={classes.taskContainer}>
+                <CardHeader
+                    title={
+                        <TextField
+                            onFocus={e => e.target.select()}
+                            className={classes.newTaskInput}
+                            error={Boolean(state.error)}
+                            helperText={state.error}
+                            label='Task'
+                            multiline
+                            onChange={setTaskName}
+                            value={state.taskName} />
+                    }
+                    action={
+                        <IconButton>
+                            <SettingsIcon />
+                        </IconButton>
+                    }
+                />
+                <CardContent>
+                    <>
+                        <SettingsWrapper>
+                            <BackGroundColorPicker state={state} dispatch={dispatchLocal} />
+                        </SettingsWrapper>
+                        <Button id={task._id} onClick={saveChanges} variant='contained' color='primary'>save</Button>
+                        <Button id={task._id} onClick={cancelEdit} variant='contained' color='secondary'>cancel</Button>
+                    </>
+                </CardContent>
+            </Card>
+        </>
     )
 }
 

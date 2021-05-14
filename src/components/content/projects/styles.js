@@ -122,6 +122,15 @@ export const useStyles = makeStyles((theme) => ({
             }
         }
     },
+    projectMenu: {
+        '& li': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            '& svg': {
+                marginLeft: theme.spacing(1)
+            }
+        }
+    },
     createProjectWrapper: {
         '& button': {
             marginTop: 10,
