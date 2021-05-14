@@ -1,9 +1,9 @@
-import { Button, Card, CardContent, CardHeader, IconButton, Menu, MenuItem, TextField } from '@material-ui/core'
-import React, { useReducer, useState } from 'react'
+import { Box, Button, Card, CardContent, CardHeader, IconButton, TextField } from '@material-ui/core'
+import React, { useReducer } from 'react'
 import { useDispatch } from 'react-redux'
 import { editProject, turnEditModeOff } from '../../../features/project/projectSlice'
 import { useStyles } from './styles'
-import SettingsIcon from '@material-ui/icons/Settings';
+import CloseIcon from '@material-ui/icons/Close'
 import SettingsMenu from './settings/SettingsMenu'
 
 let initialState = {}
@@ -35,8 +35,6 @@ const EditModeProject = ({ project }) => {
     initialState = { ...project }
     const dispatch = useDispatch()
     const [state, dispatchLocal] = useReducer(reducer, initialState)
-    const [settingsMenuOpen, setSettingsMenuOpen] = useState(false)
-    const [anchorEl, setAnchorEl] = useState(null)
     const classes = useStyles()
 
     const setProjectName = (e) => {
@@ -44,18 +42,7 @@ const EditModeProject = ({ project }) => {
         dispatchLocal({ type: 'set_project_name', projectName: e.target.value })
     }
 
-    const handleOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    }
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    }
-
-    const expandSettings = () => {
-        setSettingsMenuOpen(true)
-        handleClose()
-    }
 
     const cancelEdit = (e) => {
         dispatch(turnEditModeOff(e.currentTarget.id))
@@ -84,32 +71,19 @@ const EditModeProject = ({ project }) => {
                     }
                     action={
                         <>
-                            <IconButton onClick={handleOpen}>
-                                <SettingsIcon />
+                            <IconButton id={project._id} onClick={cancelEdit}>
+                                <CloseIcon />
                             </IconButton>
-                            <Menu
-                                className={classes.projectMenu}
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                                getContentAnchorEl={null}
-                                anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                                transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-                            >
-                                <MenuItem onClick={expandSettings}>Settings</MenuItem>
-                                <MenuItem id={project._id} onClick={cancelEdit}>Cancel</MenuItem>
-                            </Menu>
                         </>
                     }
                 />
                 <CardContent>
                     <>
-                        {settingsMenuOpen
-                            ? <SettingsMenu state={state} dispatch={dispatchLocal} />
-                            : null}
-                        <Button variant='contained' color='primary' id={project._id} onClick={saveChanges}>Save</Button>
-                        <Button variant='contained' color='secondary' id={project._id} onClick={cancelEdit}>Cancel</Button>
+                        <SettingsMenu state={state} dispatch={dispatchLocal} />
+                        <Box className={classes.editButtonGroup}>
+                            <Button variant='contained' color='primary' id={project._id} onClick={saveChanges}>Save</Button>
+                            <Button variant='contained' color='secondary' id={project._id} onClick={cancelEdit}>Cancel</Button>
+                        </Box>
                     </>
                 </CardContent>
             </Card>

@@ -163,5 +163,11 @@ export const useStyles = makeStyles((theme) => ({
     },
     categorySearchResult: {
         minWidth: 200
+    },
+    editButtonGroup: {
+        marginTop: theme.spacing(1),
+        '& :first-child': {
+            marginRight: theme.spacing(1)
+        }
     }
 }))

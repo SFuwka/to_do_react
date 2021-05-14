@@ -27,6 +27,7 @@ const CategoryMenu = ({ state, dispatch }) => {
         setAnchorEl(null)
     })
 
+
     useEffect(
         () => {
             const filtered = categoryTest.filter(category => {

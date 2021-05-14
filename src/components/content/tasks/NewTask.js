@@ -1,5 +1,6 @@
 import { Button, Grid, IconButton, Paper, TextField } from '@material-ui/core'
 import SettingsIcon from '@material-ui/icons/Settings';
+import CloseIcon from '@material-ui/icons/Close'
 import React, { useReducer, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { createTask } from '../../../features/task/tasksSlice';
@@ -80,7 +81,7 @@ const NewTask = ({ projectId, open }) => {
                     </div>
                     <div>
                         <IconButton onClick={toggleSettingsMenu}>
-                            <SettingsIcon />
+                            {settingsMenuOpen ? <CloseIcon /> : <SettingsIcon />}
                         </IconButton>
                     </div>
                 </Grid>

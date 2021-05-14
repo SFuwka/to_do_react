@@ -2,6 +2,7 @@ import { Button, Card, CardContent, CardHeader, IconButton, TextField } from '@m
 import React, { useEffect, useReducer, useState } from 'react'
 import { useStyles } from './styles'
 import SettingsIcon from '@material-ui/icons/Settings';
+import CloseIcon from '@material-ui/icons/Close'
 import ImageIcon from '@material-ui/icons/Image';
 import SettingsMenu from './settings/SettingsMenu';
 import { useDispatch, useSelector } from 'react-redux';
@@ -83,7 +84,7 @@ const NewProject = (props) => {
                 action={
                     <>
                         <IconButton onClick={toggleSettingsMenu}>
-                            <SettingsIcon />
+                            {settingsMenuOpen ? <CloseIcon /> : <SettingsIcon />}
                         </IconButton>
                         <IconButton>
                             <ImageIcon />

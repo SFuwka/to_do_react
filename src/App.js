@@ -22,7 +22,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme ? darkTheme : lightTheme}>
-      <Router>
+      <Router >
         <BaseStructure />
       </Router>
     </ThemeProvider>

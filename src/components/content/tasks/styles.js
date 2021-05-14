@@ -85,5 +85,11 @@ export const useStyles = makeStyles((theme) => ({
                 marginLeft: theme.spacing(1)
             }
         }
+    },
+    editButtonGroup: {
+        marginTop: theme.spacing(1),
+        '& :first-child': {
+            marginRight: theme.spacing(1)
+        }
     }
 }))

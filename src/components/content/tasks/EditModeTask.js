@@ -1,6 +1,6 @@
-import { Button, Card, CardContent, CardHeader, IconButton, TextField } from '@material-ui/core'
+import { Box, Button, Card, CardContent, CardHeader, IconButton, TextField } from '@material-ui/core'
 import React, { useReducer } from 'react'
-import SettingsIcon from '@material-ui/icons/Settings';
+import CloseIcon from '@material-ui/icons/Close'
 import { useDispatch } from 'react-redux'
 import { turnEditModeOff, editTask } from '../../../features/task/tasksSlice'
 import { useStyles } from './styles'
@@ -67,8 +67,8 @@ const EditModeTask = ({ projectId, task }) => {
                             value={state.taskName} />
                     }
                     action={
-                        <IconButton>
-                            <SettingsIcon />
+                        <IconButton id={task._id} onClick={cancelEdit}>
+                            <CloseIcon />
                         </IconButton>
                     }
                 />
@@ -77,8 +77,10 @@ const EditModeTask = ({ projectId, task }) => {
                         <SettingsWrapper>
                             <BackGroundColorPicker state={state} dispatch={dispatchLocal} />
                         </SettingsWrapper>
-                        <Button id={task._id} onClick={saveChanges} variant='contained' color='primary'>save</Button>
-                        <Button id={task._id} onClick={cancelEdit} variant='contained' color='secondary'>cancel</Button>
+                        <Box className={classes.editButtonGroup}>
+                            <Button id={task._id} onClick={saveChanges} variant='contained' color='primary'>save</Button>
+                            <Button id={task._id} onClick={cancelEdit} variant='contained' color='secondary'>cancel</Button>
+                        </Box>
                     </>
                 </CardContent>
             </Card>

@@ -28,6 +28,7 @@ const Projects = () => {
         }, [dispatch, pending.projectsLoading, projects.length, isFirstLoadComplete]
     )
 
+
     const toggleNewProject = () => {
         setNewProjectMenuOpen((prev) => {
             return !prev

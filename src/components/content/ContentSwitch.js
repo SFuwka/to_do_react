@@ -19,7 +19,7 @@ const ContentSwitch = () => {
         <Switch>
             <Route path='/login' component={Login} />
             <Route path='/signup' component={SignUp} />
-            <Route exact path='/projects' component={Projects} />
+            <Route exact path='/projects' render={() => <Projects key={new Date()} />} />
             <Route path='/projects/:projectId' component={ProjectPage} />
             <Route path='/home' component={MyProfile} />
             <Route path='/users' component={Users} />
