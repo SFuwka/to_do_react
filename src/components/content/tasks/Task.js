@@ -1,16 +1,18 @@
-import { Card, CardHeader, IconButton, Menu, MenuItem } from '@material-ui/core'
+import { Card, CardHeader, IconButton, Menu, MenuItem, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { useStyles } from './styles';
-import { getContrastColor } from '../../../pickers/contrastColor';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import EditIcon from '@material-ui/icons/Edit';
-import DoneIcon from '@material-ui/icons/Done';
-import Modal from '../../../commonComponents/Modal';
-import { useDispatch, useSelector } from 'react-redux';
-import { isFetching, removeTask, taskEditMode, turnEditModeOn } from '../../../features/task/tasksSlice';
-import ConfirmWindow from '../../../commonComponents/ConfirmWindow';
-import EditModeTask from './EditModeTask';
+import { useStyles } from './styles'
+import { getContrastColor } from '../../../pickers/contrastColor'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import EditIcon from '@material-ui/icons/Edit'
+import DoneIcon from '@material-ui/icons/Done'
+import Modal from '../../../commonComponents/Modal'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeCompleteStatus, isFetching, removeTask, taskEditMode, turnEditModeOn } from '../../../features/task/tasksSlice'
+import ConfirmWindow from '../../../commonComponents/ConfirmWindow'
+import EditModeTask from './EditModeTask'
+import { GreenCheckbox, IndigoAvatar } from '../../commonComponents/StyledComponents'
+
 
 const Task = ({ projectId, task }) => {
     const [anchorEl, setAnchorEl] = useState(null)
@@ -21,6 +23,7 @@ const Task = ({ projectId, task }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const bgColor = task.color ? getContrastColor(task.color) : ''
+
 
     const handleOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -48,12 +51,28 @@ const Task = ({ projectId, task }) => {
 
     const closeConfirmWindow = () => setDeleteConfirmOpen(false)
 
+    const toggleTaskComplete = () => {
+        dispatch(changeCompleteStatus(projectId, task._id, !task.finished))
+    }
+
     return (
         <>
             {!editMode.some(id => id === task._id) ? <Card className={classes.taskContainer}>
                 <CardHeader
                     style={{ backgroundColor: task.color, color: bgColor }}
-                    title={task.taskName}
+                    title={
+                        <div className={classes.taskHeader}>
+                            <IndigoAvatar>
+                                <GreenCheckbox
+                                    disabled={pending.completeStatus.some(id => id === task._id)}
+                                    id={task._id}
+                                    onChange={toggleTaskComplete}
+                                    checked={task.finished}
+                                    checkedIcon={<DoneIcon />}></GreenCheckbox>
+                            </IndigoAvatar>
+                            <Typography>{task.taskName}</Typography>
+                        </div>
+                    }
                     action={
                         <>
                             <IconButton onClick={handleOpen}>

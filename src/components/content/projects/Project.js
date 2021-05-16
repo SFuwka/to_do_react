@@ -22,9 +22,11 @@ const Project = ({ project }) => {
     const pending = useSelector(isFetching)
     const history = useHistory()
 
+
     const handleDeleteProject = (e) => {
         setProjectToDelete(e.currentTarget.id)
         setDeleteConfirmOpen(true)
+        handleClose()
     }
 
     const confirmDelete = () => {
@@ -58,7 +60,10 @@ const Project = ({ project }) => {
                             className={classes.projectLink} to={`/projects/${project._id}`}>
                             {project.projectName}
                         </NavLink> :
-                        project.projectName
+                        <div className={classes.projectHeader} style={{
+                            backgroundColor: project.color,
+                            color: project.color ? getContrastColor(project.color) : ''
+                        }}>{project.projectName}</div>
                     }
                     subheader={new Date(project.editDate).toUTCString()}
                     action={
@@ -68,7 +73,6 @@ const Project = ({ project }) => {
                             </IconButton>
                             <Menu
                                 className={classes.projectMenu}
-                                id="simple-menu"
                                 anchorEl={anchorEl}
                                 keepMounted
                                 open={Boolean(anchorEl)}

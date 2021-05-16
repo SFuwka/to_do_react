@@ -6,6 +6,7 @@ export const useStyles = makeStyles((theme) => ({
         position: 'relative'
     },
     newTaskInput: {
+        margin: 'auto 0',
         '& label.Mui-focused': {
             fontSize: 16,
             paddingLeft: 20,
@@ -76,6 +77,13 @@ export const useStyles = makeStyles((theme) => ({
         '& button': {
             margin: theme.spacing(1)
         },
+    },
+    taskHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        '& .MuiAvatar-root': {
+            marginRight: theme.spacing(1)
+        }
     },
     taskMenu: {
         '& li': {

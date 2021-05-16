@@ -108,7 +108,7 @@ const NewProject = (props) => {
                         className={classes.newProjectInput}
                         label='New Project' variant='outlined'
                         placeholder='type new project name'></TextField>
-                    <Button disabled={pending.create} variant='contained' color='secondary' onClick={sendNewProject}>Create</Button>
+                    <Button disabled={pending.create} variant='contained' color='primary' onClick={sendNewProject}>Create</Button>
                 </div>
             </CardContent>
         </Card>

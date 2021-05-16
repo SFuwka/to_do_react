@@ -1,5 +1,6 @@
 export const CREATE = 'create'
 export const DELETE = 'delete'
 export const EDIT = 'edit'
+export const COMPLETE_STATUS = 'completeStatus'
 export const PROJECTS_LOADING = 'projectsLoading'
 export const TASKS_LOADING = 'tasksLoading'

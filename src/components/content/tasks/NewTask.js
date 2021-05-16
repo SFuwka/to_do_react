@@ -68,6 +68,7 @@ const NewTask = ({ projectId, open }) => {
                             className={classes.newTaskInput}
                             onChange={setTaskName}
                             value={state.taskName}
+                            size='small'
                             error={Boolean(state.error)}
                             helperText={state.error}
                             variant='outlined'

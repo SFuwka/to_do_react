@@ -14,6 +14,9 @@ const taskApi = {
     editTask(projectId, taskId, task) {
         return axiosInstance.put(`projects/${projectId}/tasks/${taskId}`, task)
     },
+    changeCompleteStatus(projectId, taskId, status) {
+        return axiosInstance.put(`projects/${projectId}/tasks/${taskId}/status`, status)
+    },
     deleteTask(projectId, taskId) {
         return axiosInstance.delete(`projects/${projectId}/tasks/${taskId}`)
     }

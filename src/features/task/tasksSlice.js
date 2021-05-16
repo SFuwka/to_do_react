@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { CREATE, DELETE, EDIT, TASKS_LOADING } from '../actions';
+import { COMPLETE_STATUS, CREATE, DELETE, EDIT, TASKS_LOADING } from '../actions';
 import taskApi from './apiCalls';
 
 const initialState = {
@@ -9,6 +9,7 @@ const initialState = {
         tasksLoading: false,
         delete: [],
         edit: [],
+        completeStatus: [],
     },
     isFetched: false,
     editMode: [],
@@ -21,14 +22,14 @@ export const taskSlice = createSlice({
     initialState,
     reducers: {
         pending: (state, action) => {
-            if (action.payload.action === DELETE || action.payload.action === EDIT) {
+            if (action.payload.action === DELETE || action.payload.action === EDIT || action.payload.action === COMPLETE_STATUS) {
                 state.pending[action.payload.action] = [...state.pending[action.payload.action], action.payload.id]
                 return
             }
             state.pending[action.payload.action] = true
         },
         stopPending: (state, action) => {
-            if (action.payload.action === DELETE || action.payload.action === EDIT) {
+            if (action.payload.action === DELETE || action.payload.action === EDIT || action.payload.action === COMPLETE_STATUS) {
                 state.pending[action.payload.action] = [...state.pending[action.payload.action].filter(id => id !== action.payload.id)]
                 return
             }
@@ -61,6 +62,16 @@ export const taskSlice = createSlice({
             })
 
         },
+        updateTaskCompleteStatus: (state, action) => {
+            let isFinded = false
+            state.tasks = state.tasks.map(task => {
+                if (!isFinded && task._id === action.payload._id) {
+                    isFinded = true
+                    return { ...task, finished: !task.finished }
+                }
+                return task
+            })
+        },
         deleteTask: (state, action) => {
             state.tasks = state.tasks.filter(task => task._id !== action.payload)
         },
@@ -69,7 +80,7 @@ export const taskSlice = createSlice({
 })
 
 export const { pending, stopPending, setTasks, addTaskToBegining, turnEditModeOn, turnEditModeOff,
-    deleteTask, updateTask, reset, firstLoadComplete } = taskSlice.actions
+    deleteTask, updateTask, updateTaskCompleteStatus, reset, firstLoadComplete } = taskSlice.actions
 
 //selectors
 export const isFetching = state => state.task.pending
@@ -109,6 +120,24 @@ export const editTask = (projectId, taskId, task) => dispatch => {
             dispatch(turnEditModeOff(taskId))
         }
     })
+}
+
+export const changeCompleteStatus = (projectId, taskId, status) => dispatch => {
+    dispatch(pending({ action: COMPLETE_STATUS, id: taskId }))
+    const startFetchTime = new Date()
+    taskApi.changeCompleteStatus(projectId, taskId, { status }).then(res => {
+        dispatch(updateTaskCompleteStatus({ _id: taskId }))
+        const endFetch = new Date()
+        const test = setTimeout(() => {
+            dispatch(stopPending({ action: COMPLETE_STATUS, id: taskId }))
+        }, 2000)
+        if ((endFetch - startFetchTime) > 2000) {
+            dispatch(stopPending({ action: COMPLETE_STATUS, id: taskId }))
+            clearTimeout(test)
+        }
+    })
+
+
 }
 
 export const removeTask = (projectId, taskId) => dispatch => {
