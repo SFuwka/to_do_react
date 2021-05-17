@@ -5,6 +5,7 @@ import signUpReducer from '../features/auth/signUpSlice'
 import authReducer from '../features/auth/authSlice'
 import projectReducer from '../features/project/projectSlice'
 import taskReducer from '../features/task/tasksSlice'
+import userReducer from '../features/users/usersSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     login: loginReducer,
     signUp: signUpReducer,
     auth: authReducer,
+    user: userReducer,
     project: projectReducer,
     task: taskReducer
   },

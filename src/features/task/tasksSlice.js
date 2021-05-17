@@ -22,14 +22,14 @@ export const taskSlice = createSlice({
     initialState,
     reducers: {
         pending: (state, action) => {
-            if (action.payload.action === DELETE || action.payload.action === EDIT || action.payload.action === COMPLETE_STATUS) {
+            if ([DELETE, EDIT, COMPLETE_STATUS].some(item => item === action.payload.action)) {
                 state.pending[action.payload.action] = [...state.pending[action.payload.action], action.payload.id]
                 return
             }
             state.pending[action.payload.action] = true
         },
         stopPending: (state, action) => {
-            if (action.payload.action === DELETE || action.payload.action === EDIT || action.payload.action === COMPLETE_STATUS) {
+            if ([DELETE, EDIT, COMPLETE_STATUS].some(item => item === action.payload.action)) {
                 state.pending[action.payload.action] = [...state.pending[action.payload.action].filter(id => id !== action.payload.id)]
                 return
             }
@@ -45,7 +45,6 @@ export const taskSlice = createSlice({
             state.editMode = [...state.editMode, action.payload]
         },
         turnEditModeOff: (state, action) => {
-            console.log(action.payload)
             state.editMode = [...state.editMode.filter(id => id !== action.payload)]
         },
         addTaskToBegining: (state, action) => {
@@ -143,7 +142,6 @@ export const changeCompleteStatus = (projectId, taskId, status) => dispatch => {
 export const removeTask = (projectId, taskId) => dispatch => {
     dispatch(pending({ action: DELETE, id: taskId }))
     taskApi.deleteTask(projectId, taskId).then(res => {
-        console.log(res)
         dispatch(deleteTask(taskId))
         dispatch(stopPending({ action: DELETE, id: taskId }))
     })

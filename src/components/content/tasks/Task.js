@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useStyles } from './styles'
 import { getContrastColor } from '../../../pickers/contrastColor'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import RestoreIcon from '@material-ui/icons/Restore'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import EditIcon from '@material-ui/icons/Edit'
 import DoneIcon from '@material-ui/icons/Done'
@@ -34,7 +35,7 @@ const Task = ({ projectId, task }) => {
     }
 
     const handleDelete = (e) => {
-        setTaskToDelete(e.currentTarget.id)
+        setTaskToDelete(task._id)
         setDeleteConfirmOpen(true)
         handleClose()
     }
@@ -44,8 +45,13 @@ const Task = ({ projectId, task }) => {
         closeConfirmWindow()
     }
 
-    const handleEdit = (e) => {
-        dispatch(turnEditModeOn(e.currentTarget.id))
+    const handleEdit = () => {
+        dispatch(turnEditModeOn(task._id))
+        handleClose()
+    }
+
+    const handleTaskComplete = () => {
+        toggleTaskComplete()
         handleClose()
     }
 
@@ -88,10 +94,13 @@ const Task = ({ projectId, task }) => {
                                 anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                             >
-                                <MenuItem onClick={handleEdit} id={task._id}>Edit <EditIcon /></MenuItem>
+                                <MenuItem onClick={handleEdit}>Edit <EditIcon /></MenuItem>
                                 <MenuItem disabled={pending.delete.some(id => id === task._id)} id={task._id}
                                     onClick={handleDelete}>Delete <DeleteForeverIcon /></MenuItem>
-                                <MenuItem onClick={handleClose}>Complete <DoneIcon /></MenuItem>
+                                <MenuItem disabled={pending.completeStatus.some(id => id === task._id)}
+                                    onClick={handleTaskComplete} >{task.finished
+                                        ? <>Uncomplete <RestoreIcon /> </>
+                                        : <>Complete <DoneIcon /></>} </MenuItem>
                             </Menu>
                         </>
                     }
