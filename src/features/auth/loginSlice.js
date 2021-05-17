@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { reset as projectsReset } from '../project/projectSlice';
+import { reset as usersReset } from '../users/usersSlice'
 import authApi from './apiCalls';
 import { authMe } from './authSlice';
 
@@ -43,6 +44,7 @@ export const login = (email, password, rememberMe) => (dispatch) => {
         dispatch(success())
         dispatch(authMe())
         dispatch(projectsReset())
+        dispatch(usersReset())
     }).catch(err => {
         console.log(err.response.data)
         dispatch(failure(err.response.data))
