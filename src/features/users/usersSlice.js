@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { MY_PROFILE_FETCH, USERS_FETCH } from '../actions';
+import { ACTIVE_USER_FETCH, MY_PROFILE_FETCH, USERS_FETCH } from '../actions';
 import usersApi from './apiCalls';
 
 const initialState = {
@@ -10,7 +10,7 @@ const initialState = {
     },
     totalUsersCount: 0,
     authUser: null,
-    activeUser: {},
+    activeUser: null,
     users: [],
     err: null,
 }
@@ -28,6 +28,10 @@ export const usersSlice = createSlice({
         setAuthUser: (state, action) => {
             state.authUser = action.payload
         },
+        setActiveUser: (state, action) => {
+            state.activeUser = action.payload
+        },
+        clearActiveUser: state => { state.activeUser = null },
         setUsers: (state, action) => {
             state.users = [...state.users, ...action.payload]
         },
@@ -39,12 +43,13 @@ export const usersSlice = createSlice({
 });
 
 
-export const { pending, stopPending, setAuthUser, setUsers, setTotalUsersCount, reset } = usersSlice.actions;
+export const { pending, stopPending, setAuthUser, setActiveUser, clearActiveUser, setUsers, setTotalUsersCount, reset } = usersSlice.actions;
 
 //selectors
 export const authUser = state => state.user.authUser
 export const isFetching = state => state.user.pending
 export const users = state => state.user.users
+export const activeUser = state => state.user.activeUser
 
 //thunks
 export const getMyProfile = () => dispatch => {
@@ -64,6 +69,16 @@ export const getUsers = () => dispatch => {
         dispatch(setTotalUsersCount(res.totalCount))
         dispatch(setUsers(res.profiles))
         dispatch(stopPending({ action: USERS_FETCH }))
+    })
+}
+
+export const getUser = (userId) => dispatch => {
+    dispatch(pending({ action: ACTIVE_USER_FETCH }))
+    usersApi.getUser(userId).then(res => {
+        dispatch(setActiveUser(res))
+        dispatch(stopPending({ action: ACTIVE_USER_FETCH }))
+    }).catch(res=>{
+        console.log(res)
     })
 }
 

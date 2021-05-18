@@ -9,6 +9,7 @@ import Users from './users/Users'
 import Root from './Root'
 import MyProfile from './users/MyProfile'
 import ProjectPage from './projects/ProjectPage'
+import Profile from './users/Profile'
 
 const ContentSwitch = () => {
     const progress = useSelector(isFetching)
@@ -22,7 +23,8 @@ const ContentSwitch = () => {
             <Route exact path='/projects' render={() => <Projects key={new Date()} />} />
             <Route path='/projects/:projectId' component={ProjectPage} />
             <Route path='/home' component={MyProfile} />
-            <Route path='/users' component={Users} />
+            <Route exact path='/users' component={Users} />
+            <Route path='/users/:userId' component={Profile} />
             <Route exact path='/' component={Root} />
         </Switch>
     )

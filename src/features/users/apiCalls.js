@@ -9,6 +9,9 @@ const usersApi = {
     getUsers() {
         return axiosInstance.get(`user/`).then(response => response.data)
     },
+    getUser(userId) {
+        return axiosInstance.get(`user/${userId}`).then(response => response.data)
+    }
 
 }
 

@@ -11,7 +11,7 @@ const MyProfile = () => {
     const redirect = useNotAuth()
     const profile = useSelector(authUser)
     const pending = useSelector(isFetching)
-    console.log(profile)
+
     useEffect(
         () => {
             if (!profile && !pending.myProfileFetching) {
@@ -19,6 +19,7 @@ const MyProfile = () => {
             }
         }, [profile, dispatch, pending.myProfileFetching]
     )
+    
     if (redirect) return <Redirect to='/login' />
     if (pending.myProfileFetch) return <ProfilePreloader />
     if (!profile) return <></>

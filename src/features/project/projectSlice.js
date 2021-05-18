@@ -119,7 +119,6 @@ export const removeProject = projectId => dispatch => {
         dispatch(deleteProject(projectId))
         dispatch(stopPending({ action: DELETE, id: projectId }))
     })
-
 }
 
 export const editProject = project => dispatch => {

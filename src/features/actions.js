@@ -1,6 +1,7 @@
 export const CREATE = 'create'
 export const MY_PROFILE_FETCH = 'myProfileFetch'
 export const USERS_FETCH = 'usersFetch'
+export const ACTIVE_USER_FETCH = 'activeUserFetch'
 export const DELETE = 'delete'
 export const EDIT = 'edit'
 export const COMPLETE_STATUS = 'completeStatus'

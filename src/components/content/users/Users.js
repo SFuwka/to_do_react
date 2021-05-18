@@ -1,13 +1,14 @@
 import { Card } from '@material-ui/core'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import { getUsers, isFetching, users } from '../../../features/users/usersSlice'
+import { linkStyle } from '../../commonStyles'
 
 const Users = () => {
     const dispatch = useDispatch()
     const pending = useSelector(isFetching)
     const profiles = useSelector(users)
-    console.log(profiles)
 
     useEffect(
         () => {
@@ -20,10 +21,9 @@ const Users = () => {
     return (
         <>
             {profiles.map(profile => {
-                console.log(profile)
-                return <Card>
-                    <h1>{profile.alias}</h1>
-                    <h2>{profile.projectsCount}</h2>
+                return <Card key={profile._id}>
+                    <NavLink style={linkStyle} to={`users/${profile._id}`}><h1>{profile.alias}</h1></NavLink>
+                    <h2>Projects count: {profile.projectsCount}</h2>
                 </Card>
             })}
         </>
