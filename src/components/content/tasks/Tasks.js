@@ -43,7 +43,7 @@ const Tasks = ({ projectId, editable }) => {
 
     return (
         <>
-            <TopControll disabled={editable} createNewText='New Task' listText='Tasks'
+            <TopControll context='tasks' disabled={editable} createNewText='New Task' listText='Tasks'
                 open={newTaskMenuOpen} toggleOpen={handleToggleMenuOpen} />
             <NewTask projectId={projectId} open={newTaskMenuOpen} />
             {pending.tasksLoading ? tasksPreload() :

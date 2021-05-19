@@ -6,6 +6,7 @@ import authReducer from '../features/auth/authSlice'
 import projectReducer from '../features/project/projectSlice'
 import taskReducer from '../features/task/tasksSlice'
 import userReducer from '../features/users/usersSlice'
+import searchReducer from '../features/search/searchSlice'
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     auth: authReducer,
     user: userReducer,
     project: projectReducer,
-    task: taskReducer
+    task: taskReducer,
+    search: searchReducer,
   },
 });

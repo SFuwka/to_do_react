@@ -32,7 +32,7 @@ const Profile = () => {
             <h1>{profie.user.alias}</h1>
             {profie.projects.map(project => {
                 console.log(project)
-                return <Card style={{ marginTop: 10 }}>{project.projectName}</Card >
+                return <Card key={project._id} style={{ marginTop: 10 }}>{project.projectName}</Card >
             })}
         </>
     )

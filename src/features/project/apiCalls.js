@@ -1,7 +1,7 @@
 import axiosInstance from '../axiosSettings'
 
-const projectApi = {
 
+const projectApi = {
     newProject(project) {
         return axiosInstance.post('projects', project).then(response => response.data)
     },

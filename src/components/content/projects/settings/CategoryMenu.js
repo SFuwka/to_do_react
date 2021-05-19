@@ -1,16 +1,16 @@
 import { List, ListItem, ListItemText, Paper, Popper, TextField } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import useClickAway from '../../../../hooks/useClickAway'
+import { patternCreator } from '../../../../utils/patternCreator'
 import { useStyles } from '../styles'
 
 const categoryTest = ['IT', 'Guide', 'toDo list', 'time management', 'DIY', 'cleaning', 'cars', 'test1', 'test2', 'test3', 'test4', 'tes']
 
+
+
 const checkString = (expression, str) => {
-    const pattern = str.split("").map((char) => {
-        if (char === "\\") return ''
-        return `(?=.*${char})`
-    }).join("");
-    const regex = new RegExp(`${pattern}`, "gi")
+    const pattern = patternCreator(str)
+    const regex = new RegExp(pattern, 'gi')
     return expression.match(regex);
 }
 
@@ -88,7 +88,8 @@ const CategoryMenu = ({ state, dispatch }) => {
     }
     return (
         <>
-            <TextField onKeyDown={handleKeyboardEvent} value={state.category || searchText} onChange={searchCategory} onClick={handleClick}></TextField>
+            <TextField onKeyDown={handleKeyboardEvent} value={state.category || searchText}
+                onChange={searchCategory} onClick={handleClick}></TextField>
             <Popper anchorEl={anchorEl} open={Boolean(anchorEl)} placement={'bottom-start'}>
                 <Paper ref={clickAwayRef} className={classes.categorySearchResult}>
                     <List ref={list}>

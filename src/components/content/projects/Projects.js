@@ -20,6 +20,7 @@ const Projects = () => {
     const isFirstLoadComplete = useSelector(isFetched)
 
 
+
     useEffect(
         () => {
             if (projects.length === 0 && !pending.projectsLoading && !isFirstLoadComplete) {
@@ -41,7 +42,7 @@ const Projects = () => {
     return (
         <>
             <Typography align='center' variant='h4' component='h1'>Projects</Typography>
-            <TopControll open={newProjectMenuOpen} toggleOpen={toggleNewProject}
+            <TopControll context='projects' open={newProjectMenuOpen} toggleOpen={toggleNewProject}
                 createNewText='New Project' listText='Projects' />
 
             <div className={classes.projectsContainer}>
