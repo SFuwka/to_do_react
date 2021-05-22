@@ -94,12 +94,6 @@ export const getProjectById = projectId => {
         return projects.find(project => project._id === projectId)
     })
 }
-export const findProjectByName = pattern => {
-    const regex = new RegExp(pattern, 'gi')
-    return createSelector(projects, (projects) => {
-        return projects.filter(project => project.projectName.match(regex))
-    })
-}
 export const activeProject = state => state.project.activeProject
 export const isFetching = state => state.project.pending
 export const isFetched = state => state.project.isFetched

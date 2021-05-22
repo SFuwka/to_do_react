@@ -4,9 +4,8 @@ import { useStyles } from '../content/projects/styles' //ToDo split styles to di
 import SearchIcon from '@material-ui/icons/Search';
 import useDebounce from '../../hooks/useDebounce'
 import { useDispatch, useSelector } from 'react-redux';
-import { search } from '../../features/search/searchSlice';
-import { patternCreator } from '../../utils/patternCreator';
-import { findProjectByName } from '../../features/project/projectSlice';
+import { search, searchResult } from '../../features/search/searchSlice';
+
 
 
 
@@ -16,40 +15,51 @@ const TopControll = ({ open, toggleOpen, context, createNewText = 'new', listTex
     const [searchInputValue, setSearchInputValue] = useState('')
     const searchText = useDebounce(searchInputValue, 300)
 
-    const findedProjects = useSelector(findProjectByName(patternCreator(searchText)))
-
+    const searchRes = useSelector(searchResult)
+    console.log(searchRes)
 
     useEffect(() => {
-        if (searchText && findedProjects.lenght < 5) {
+        if (searchText) {
             dispatch(search(context, searchText))
         }
-    }, [searchText, context, dispatch, findedProjects.lenght])
+    }, [searchText, context, dispatch])
 
     const handleChange = e => {
         setSearchInputValue(e.currentTarget.value)
     }
     return (
-        <Paper className={classes.topControll}>
-            <Button color='primary' onClick={toggleOpen} variant='contained'
-                className={`${classes.newProjectButton} ${open ? classes.success : ''}`}>
-                {!open ? `${createNewText}` : `${listText}`}</Button>
-            <div className={classes.search}>
-                <div>
-                    <div className={classes.searchIcon}><SearchIcon /></div>
-                    <InputBase
-                        disabled={open}
-                        value={searchInputValue}
-                        onChange={handleChange}
-                        placeholder="Search…"
-                        classes={{
-                            root: classes.inputRoot,
-                            input: classes.inputInput,
-                        }}
-                        inputProps={{ 'aria-label': 'search' }}
-                    />
+        <>
+            <Paper className={classes.topControll}>
+                <Button color='primary' onClick={toggleOpen} variant='contained'
+                    className={`${classes.newProjectButton} ${open ? classes.success : ''}`}>
+                    {!open ? `${createNewText}` : `${listText}`}</Button>
+                <div className={classes.search}>
+                    <div>
+                        <div className={classes.searchIcon}><SearchIcon /></div>
+                        <div>
+                            <InputBase
+                                disabled={open}
+                                value={searchInputValue}
+                                onChange={handleChange}
+                                placeholder="Search…"
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                            <div style={{ position: 'absolute', zIndex: 10000, backgroundColor: 'red', width: '100%' }}>
+                                {searchRes && searchRes.projects && searchRes.projects.map(item => {
+                                    return <h3>{item._id}</h3>
+                                })}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </Paper>
+
+            </Paper>
+        </>
+
     )
 }
 

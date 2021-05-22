@@ -4,7 +4,7 @@ import useClickAway from '../../../../hooks/useClickAway'
 import { patternCreator } from '../../../../utils/patternCreator'
 import { useStyles } from '../styles'
 
-const categoryTest = ['IT', 'Guide', 'toDo list', 'time management', 'DIY', 'cleaning', 'cars', 'test1', 'test2', 'test3', 'test4', 'tes']
+const categoryTest = ['IT', 'Guide', 'toDo list', 'time management', 'second project', 'ToDo', 'DIY', 'cleaning', 'cars', 'test1', 'test2', 'test3', 'test4', 'tes']
 
 
 
