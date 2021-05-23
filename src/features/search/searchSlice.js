@@ -13,13 +13,15 @@ export const searchSlice = createSlice({
     initialState,
     reducers: {
         setSearchResult: (state, action) => {
+            console.log(action.payload)
             state.searchResult = action.payload
-        }
+        },
+        reset: () => initialState
     },
 });
 
 
-export const { setSearchResult } = searchSlice.actions;
+export const { setSearchResult, reset } = searchSlice.actions;
 
 //selectors
 export const searchResult = state => state.search.searchResult

@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 
-const useClickAway = (ref, callBack) => {
+const useClickAway = (ref, exception, callBack) => {
     useEffect(() => {
-
         const handleClickOutside = (event) => {
             if (ref.current && !ref.current.contains(event.target)) {
-                callBack()
+                if (typeof exception === 'function') {
+                    return exception()
+                }
+                if (!exception.current.contains(event.target)) {
+                    callBack()
+                }
             }
         }
 
@@ -15,7 +19,7 @@ const useClickAway = (ref, callBack) => {
             // Unbind the event listener on clean up
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [ref, callBack]);
+    }, [ref, exception, callBack]);
 }
 
 export default useClickAway
