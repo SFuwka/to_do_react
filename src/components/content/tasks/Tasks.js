@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 import { getTasks, isFetched, isFetching, reset, tasks as tasksSelector } from '../../../features/task/tasksSlice'
 import TopControll from '../../commonComponents/TopControll'
 import ProjectSkeleton from '../projects/ProjectSkeleton'
@@ -8,6 +9,8 @@ import Task from './Task'
 
 
 const Tasks = ({ projectId, editable }) => {
+    const taskRef = useRef(null)
+    const history = useHistory()
     const [newTaskMenuOpen, setNewTaskMenuOpen] = useState(false)
     const dispatch = useDispatch()
     const tasks = useSelector(tasksSelector)
@@ -16,6 +19,8 @@ const Tasks = ({ projectId, editable }) => {
     const handleToggleMenuOpen = () => {
         setNewTaskMenuOpen(prev => !prev)
     }
+
+
 
     useEffect(
         () => {
@@ -49,7 +54,7 @@ const Tasks = ({ projectId, editable }) => {
             {pending.tasksLoading ? tasksPreload() :
                 tasks.length ? tasks.map((task, i) => {
                     return (
-                        <Task key={i} projectId={projectId} task={task} />
+                        <Task propRef={taskRef} hash={history.location.hash} key={i} projectId={projectId} task={task} />
                     )
                 }) : <h1>No tasks created yet</h1>}
         </>

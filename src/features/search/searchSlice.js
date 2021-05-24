@@ -13,7 +13,6 @@ export const searchSlice = createSlice({
     initialState,
     reducers: {
         setSearchResult: (state, action) => {
-            console.log(action.payload)
             state.searchResult = action.payload
         },
         reset: () => initialState

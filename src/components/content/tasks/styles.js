@@ -99,5 +99,12 @@ export const useStyles = makeStyles((theme) => ({
         '& :first-child': {
             marginRight: theme.spacing(1)
         }
+    },
+    taskWrapper: {
+        position: 'relative'
+    },
+    taskAnchor: {
+        position: 'absolute',
+        top: -64
     }
 }))

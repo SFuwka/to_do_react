@@ -1,5 +1,5 @@
 import { Card, CardHeader, IconButton, Menu, MenuItem, Typography } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useStyles } from './styles'
 import { getContrastColor } from '../../../pickers/contrastColor'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
@@ -15,7 +15,10 @@ import EditModeTask from './EditModeTask'
 import { GreenCheckbox, IndigoAvatar } from '../../commonComponents/StyledComponents'
 
 
-const Task = ({ projectId, task }) => {
+
+
+const Task = ({ propRef, hash, projectId, task }) => {
+
     const [anchorEl, setAnchorEl] = useState(null)
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
     const [taskToDelete, setTaskToDelete] = useState(null)
@@ -24,6 +27,13 @@ const Task = ({ projectId, task }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const bgColor = task.color ? getContrastColor(task.color) : ''
+
+
+    useEffect(
+        () => {
+            propRef && propRef.current && propRef.current.scrollIntoView()
+        }, [hash, propRef]
+    )
 
 
     const handleOpen = (event) => {
@@ -62,9 +72,11 @@ const Task = ({ projectId, task }) => {
     }
 
     return (
-        <>
+        <div className={classes.taskWrapper}>
+
             {!editMode.some(id => id === task._id) ? <Card className={classes.taskContainer}>
                 <CardHeader
+                    id={task._id}
                     style={{ backgroundColor: task.color, color: bgColor }}
                     title={
                         <div className={classes.taskHeader}>
@@ -105,12 +117,13 @@ const Task = ({ projectId, task }) => {
                         </>
                     }
                 />
+                <div className={classes.taskAnchor} ref={hash ? (hash.slice(1) === task._id ? propRef : null) : null}></div>
             </Card> : <EditModeTask projectId={projectId} task={task} />}
 
             <Modal open={deleteConfirmOpen} onClose={closeConfirmWindow}>
                 <ConfirmWindow onConfirm={confirmDelete} onClose={closeConfirmWindow} />
             </Modal>
-        </>
+        </div>
     )
 }
 
