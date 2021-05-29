@@ -28,7 +28,6 @@ const TopControll = ({ open, toggleOpen, context, createNewText = 'new', listTex
     }, [dispatch])
 
     const searchRes = useSelector(searchResult)
-    console.log(searchRes)
 
     useEffect(() => {
         if (searchText) {

@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { COMPLETE_STATUS, CREATE, DELETE, EDIT, TASKS_LOADING } from '../actions';
 import taskApi from './apiCalls';
 
+const TASKS_PER_REQUEST = 20
+
 const initialState = {
     tasks: [],
     pending: {
@@ -10,6 +12,10 @@ const initialState = {
         delete: [],
         edit: [],
         completeStatus: [],
+    },
+    taskPage: {
+        currentPage: 1,
+        totalPagesCount: 0,
     },
     isFetched: false,
     editMode: [],
@@ -71,6 +77,12 @@ export const taskSlice = createSlice({
                 return task
             })
         },
+        setPagesCount: (state, action) => {
+            state.taskPage.totalPagesCount = action.payload
+        },
+        incrementPage: state => {
+            state.taskPage.currentPage++
+        },
         deleteTask: (state, action) => {
             state.tasks = state.tasks.filter(task => task._id !== action.payload)
         },
@@ -79,7 +91,7 @@ export const taskSlice = createSlice({
 })
 
 export const { pending, stopPending, setTasks, addTaskToBegining, turnEditModeOn, turnEditModeOff,
-    deleteTask, updateTask, updateTaskCompleteStatus, reset, firstLoadComplete } = taskSlice.actions
+    deleteTask, updateTask, updateTaskCompleteStatus, reset, firstLoadComplete, setPagesCount, incrementPage } = taskSlice.actions
 
 //selectors
 export const isFetching = state => state.task.pending
@@ -87,6 +99,7 @@ export const tasks = state => state.task.tasks
 export const error = state => state.task.error
 export const isFetched = state => state.task.isFetched
 export const taskEditMode = state => state.task.editMode
+export const taskPage = state => state.task.taskPage
 
 //thunks
 export const createTask = (projectId, task) => dispatch => {
@@ -97,13 +110,15 @@ export const createTask = (projectId, task) => dispatch => {
     })
 }
 
-export const getTasks = (projectId) => dispatch => {
+export const getTasks = (projectId, page) => dispatch => {
     dispatch(pending({ action: TASKS_LOADING }))
-    taskApi.getTasks(projectId).then(res => {
+    taskApi.getTasks(projectId, page).then(res => {
         dispatch(firstLoadComplete())
         if (res.data.tasks) {
             dispatch(setTasks(res.data.tasks))
             dispatch(stopPending({ action: TASKS_LOADING }))
+            dispatch(incrementPage())
+            dispatch(setPagesCount(Math.ceil(res.data.tasksCount / TASKS_PER_REQUEST)))
         } else {
             dispatch(stopPending({ action: TASKS_LOADING }))
         }

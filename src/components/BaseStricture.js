@@ -76,7 +76,7 @@ export default function BaseStricture() {
                 <Divider />
                 <List>{secondaryListItems}</List>
             </Drawer>
-            <main className={classes.content}>
+            <main className={classes.content} id='content'>
                 <div className={classes.contentWraper} >
                     <div className={classes.appBarSpacer} />
                     <Container maxWidth="lg" className={classes.container} >

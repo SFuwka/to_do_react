@@ -12,11 +12,11 @@ function SearchResult({ searchRes }) {
 
     return (
         <div style={{ width: '100%' }}>
-            {searchRes && searchRes.projects.length ? <p>Projects:</p> : null}
+            {searchRes && searchRes.projects && searchRes.projects.length ? <p>Projects:</p> : null}
             {searchRes && searchRes.projects && searchRes.projects.map(item => {
-                return <MenuItem key={item._id}>{item.projectName}</MenuItem>
+                return <MenuItem projectid={item._id} onClick={handleRelocate} key={item._id}>{item.projectName}</MenuItem>
             })}
-            {searchRes && searchRes.tasks.length ? <p>Tasks:</p> : null}
+            {searchRes && searchRes.tasks && searchRes.tasks.length ? <p>Tasks:</p> : null}
             {searchRes && searchRes.tasks && searchRes.tasks.map(item => {
                 return <MenuItem projectid={item.project} taskid={item._id} onClick={handleRelocate} key={item._id}>
 
