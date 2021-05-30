@@ -1,13 +1,20 @@
 import { MenuItem, Typography } from '@material-ui/core'
-import React from 'react'
-import { useHistory } from 'react-router'
+import React, { useState } from 'react'
+import { Redirect } from 'react-router'
 
 function SearchResult({ searchRes }) {
-    const history = useHistory()
+    const [redirect, setRedirect] = useState(null)
     const handleRelocate = (e) => {
         const projectId = e.currentTarget.getAttribute('projectid')
         const taskId = e.currentTarget.getAttribute('taskid')
-        history.push(`/projects/${projectId}#${taskId}`)
+        setRedirect({
+            pathname: `/projects/${projectId}`,
+            state: { taskId }
+        })
+    }
+
+    if (redirect) {
+        return <Redirect to={redirect} />
     }
 
     return (

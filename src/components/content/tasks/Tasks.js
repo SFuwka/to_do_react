@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { getTasks, isFetched, isFetching, reset, taskPage, tasks as tasksSelector } from '../../../features/task/tasksSlice'
@@ -11,7 +11,6 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 
 
 const Tasks = ({ projectId, editable }) => {
-    const taskRef = useRef(null)
     const history = useHistory()
     const [newTaskMenuOpen, setNewTaskMenuOpen] = useState(false)
     const dispatch = useDispatch()
@@ -34,16 +33,17 @@ const Tasks = ({ projectId, editable }) => {
 
     useEffect(
         () => {
+            if (!history.location.state) return
             if (!tasks.length) return
-            history.location.hash && setLookingForTask(true)
+            history.location.state.taskId && setLookingForTask(true)
             let t = tasks.find(task => {
-                return task._id === history.location.hash.slice(1)
+                return task._id === history.location.state.taskId
             })
-            if (!t && !pending.tasksLoading && history.location.hash && page.currentPage <= page.totalPagesCount) {
+            if (!t && !pending.tasksLoading && history.location.state.taskId && page.currentPage <= page.totalPagesCount) {
                 dispatch(getTasks(projectId, page.currentPage))
             }
             if (t) setLookingForTask(false)
-        }, [history.location.hash, tasks, dispatch, page.currentPage, pending.tasksLoading, projectId, page.totalPagesCount]
+        }, [history.location.state, tasks, dispatch, page.currentPage, pending.tasksLoading, projectId, page.totalPagesCount]
     )
 
     useEffect(
@@ -84,7 +84,7 @@ const Tasks = ({ projectId, editable }) => {
                 scrollableTarget='content'
             > {tasks.map((task, i) => {
                 return (
-                    <Task propRef={taskRef} hash={history.location.hash} key={i} projectId={projectId} task={task} />
+                    <Task key={i} projectId={projectId} task={task} />
                 )
             })} </InfiniteScroll>}
         </>

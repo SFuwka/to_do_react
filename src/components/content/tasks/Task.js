@@ -1,5 +1,5 @@
 import { Card, CardHeader, IconButton, Menu, MenuItem, Typography } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useStyles } from './styles'
 import { getContrastColor } from '../../../pickers/contrastColor'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
@@ -13,10 +13,13 @@ import { changeCompleteStatus, isFetching, removeTask, taskEditMode, turnEditMod
 import ConfirmWindow from '../../../commonComponents/ConfirmWindow'
 import EditModeTask from './EditModeTask'
 import { GreenCheckbox, IndigoAvatar } from '../../commonComponents/StyledComponents'
+import { useHistory } from 'react-router'
 
 
 
-const Task = ({ propRef, hash, projectId, task }) => {
+const Task = ({ projectId, task }) => {
+    const history = useHistory()
+    const scrollToRef = useRef(null)
     const [anchorEl, setAnchorEl] = useState(null)
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
     const [taskToDelete, setTaskToDelete] = useState(null)
@@ -26,11 +29,11 @@ const Task = ({ propRef, hash, projectId, task }) => {
     const dispatch = useDispatch()
     const bgColor = task.color ? getContrastColor(task.color) : ''
 
-    
+
     useEffect(
         () => {
-            propRef && propRef.current && propRef.current.scrollIntoView()
-        }, [hash, propRef]
+            scrollToRef && scrollToRef.current && scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
+        }, [history.location.state, scrollToRef] 
     )
 
 
@@ -115,7 +118,7 @@ const Task = ({ propRef, hash, projectId, task }) => {
                         </>
                     }
                 />
-                <div className={classes.taskAnchor} ref={hash ? (hash.slice(1) === task._id ? propRef : null) : null}></div>
+                <div className={classes.taskAnchor} ref={history.location.state && history.location.state.taskId === task._id ? scrollToRef : null}></div>
             </Card> : <EditModeTask projectId={projectId} task={task} />}
 
             <Modal open={deleteConfirmOpen} onClose={closeConfirmWindow}>
