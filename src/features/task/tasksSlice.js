@@ -116,8 +116,8 @@ export const getTasks = (projectId, page) => dispatch => {
         dispatch(firstLoadComplete())
         if (res.data.tasks) {
             dispatch(setTasks(res.data.tasks))
-            dispatch(stopPending({ action: TASKS_LOADING }))
             dispatch(incrementPage())
+            dispatch(stopPending({ action: TASKS_LOADING }))
             dispatch(setPagesCount(Math.ceil(res.data.tasksCount / TASKS_PER_REQUEST)))
         } else {
             dispatch(stopPending({ action: TASKS_LOADING }))

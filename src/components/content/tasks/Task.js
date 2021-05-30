@@ -16,9 +16,7 @@ import { GreenCheckbox, IndigoAvatar } from '../../commonComponents/StyledCompon
 
 
 
-
 const Task = ({ propRef, hash, projectId, task }) => {
-
     const [anchorEl, setAnchorEl] = useState(null)
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
     const [taskToDelete, setTaskToDelete] = useState(null)
@@ -28,7 +26,7 @@ const Task = ({ propRef, hash, projectId, task }) => {
     const dispatch = useDispatch()
     const bgColor = task.color ? getContrastColor(task.color) : ''
 
-
+    
     useEffect(
         () => {
             propRef && propRef.current && propRef.current.scrollIntoView()

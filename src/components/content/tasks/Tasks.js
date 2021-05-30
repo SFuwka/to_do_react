@@ -15,6 +15,7 @@ const Tasks = ({ projectId, editable }) => {
     const history = useHistory()
     const [newTaskMenuOpen, setNewTaskMenuOpen] = useState(false)
     const dispatch = useDispatch()
+    const [lookingForTask, setLookingForTask] = useState(false)
     const tasks = useSelector(tasksSelector)
     const pending = useSelector(isFetching)
     const page = useSelector(taskPage)
@@ -22,37 +23,27 @@ const Tasks = ({ projectId, editable }) => {
     const handleToggleMenuOpen = () => {
         setNewTaskMenuOpen(prev => !prev)
     }
-    console.log(page)
-
-    //  const handleScroll = (e) => {
-
-    //         let contentHeight = e.target.scrollHeight - e.target.offsetHeight
-    //         console.log(page.currentPage <= page.totalPagesCount)
-    //         setScrollMax(prev => {
-    //             if (prev > e.target.scrollTop) return prev
-    //             return e.target.scrollTop
-    //         })
-
-    //         if (scrollMax > contentHeight / SCROLL_UPLOAD_SCALE && !pending.tasksLoading && page.currentPage <= page.totalPagesCount) {
-    //             dispatch(getTasks(projectId, page.currentPage))
-    //         }
-    //     }
-    //console.log(scrollMax, 'max')
-
-    // useEffect(() => {
-    //     window.addEventListener('scroll', throttle(handleScroll, 50), true)
-    //     return () => window.removeEventListener('scroll', throttle(handleScroll, 50,), true)
-    // }, [])
-
-
-
 
     useEffect(
         () => {
             if (tasks.length === 0 && !pending.tasksLoading && !isFirstLoadComplete) {
                 dispatch(getTasks(projectId))
             }
-        }, [dispatch, tasks.length, pending.tasksLoading, projectId, isFirstLoadComplete]
+        }, [dispatch, tasks.length, pending.tasksLoading, projectId, isFirstLoadComplete, history.location]
+    )
+
+    useEffect(
+        () => {
+            if (!tasks.length) return
+            history.location.hash && setLookingForTask(true)
+            let t = tasks.find(task => {
+                return task._id === history.location.hash.slice(1)
+            })
+            if (!t && !pending.tasksLoading && history.location.hash && page.currentPage <= page.totalPagesCount) {
+                dispatch(getTasks(projectId, page.currentPage))
+            }
+            if (t) setLookingForTask(false)
+        }, [history.location.hash, tasks, dispatch, page.currentPage, pending.tasksLoading, projectId, page.totalPagesCount]
     )
 
     useEffect(
@@ -77,14 +68,16 @@ const Tasks = ({ projectId, editable }) => {
 
 
     if (!isFirstLoadComplete) return tasksPreload()
-    
+    if (lookingForTask) return tasksPreload()
+
     return (
         <>
             <TopControll context='tasks' disabled={editable} createNewText='New Task' listText='Tasks'
                 open={newTaskMenuOpen} toggleOpen={handleToggleMenuOpen} />
             <NewTask projectId={projectId} open={newTaskMenuOpen} />
+
             {(isFirstLoadComplete && !tasks.length) ? <h2>No tasks created yet :(</h2> : < InfiniteScroll
-                dataLength={page.totalPagesCount}
+                dataLength={page.currentPage}
                 hasMore={page.currentPage <= page.totalPagesCount}
                 next={fetchMore}
                 loader={<ProjectSkeleton />}

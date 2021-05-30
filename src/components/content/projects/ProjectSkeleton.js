@@ -10,6 +10,7 @@ const ProjectSkeleton = () => {
             <CardHeader
                 title={
                     <Typography >
+                        Loading...
                         <Skeleton />
                     </Typography>
                 }
