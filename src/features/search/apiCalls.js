@@ -1,8 +1,8 @@
 import axiosInstance from '../axiosSettings'
 
 const searchApi = {
-    search(context, pattern) {
-        return axiosInstance.get(`search/?where=${context}&pattern=${pattern}`)
+    search(context, text) {
+        return axiosInstance.get(`search/?where=${context}&text=${text}`)
     }
 }
 

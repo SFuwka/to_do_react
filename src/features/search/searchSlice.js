@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { patternCreator } from '../../utils/patternCreator';
 import searchApi from './apiCalls';
 
 
@@ -26,8 +25,7 @@ export const { setSearchResult, reset } = searchSlice.actions;
 export const searchResult = state => state.search.searchResult
 //thunks
 export const search = (context, searchText) => dispatch => {
-    const pattern = patternCreator(searchText)
-    searchApi.search(context, pattern).then(res => {
+    searchApi.search(context, searchText).then(res => {
         dispatch(setSearchResult(res.data))
     })
 }

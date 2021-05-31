@@ -1,5 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { CREATE, DELETE, EDIT, PROJECTS_LOADING } from '../actions';
+import { decrementAuthUserProjectsCount, incrementAuthUserProjectsCount } from '../users/usersSlice';
 import projectApi from './apiCalls';
 
 const initialState = {
@@ -104,9 +105,9 @@ export const projectEditMode = state => state.project.editMode
 //thunks
 export const createProject = project => dispatch => {
     dispatch(pending({ action: CREATE }))
-    console.log(project)
     projectApi.newProject(project).then((res) => {
         dispatch(addProjectToBegining(res.project))
+        dispatch(incrementAuthUserProjectsCount())
         dispatch(stopPending({ action: CREATE }))
     }).catch(error => {
         dispatch(failure(error.response.data))
@@ -117,6 +118,7 @@ export const removeProject = projectId => dispatch => {
     dispatch(pending({ action: DELETE, id: projectId }))
     projectApi.deleteProject(projectId).then(res => {
         dispatch(deleteProject(projectId))
+        dispatch(decrementAuthUserProjectsCount())
         dispatch(stopPending({ action: DELETE, id: projectId }))
     })
 }

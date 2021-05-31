@@ -35,6 +35,12 @@ export const usersSlice = createSlice({
         setUsers: (state, action) => {
             state.users = [...state.users, ...action.payload]
         },
+        incrementAuthUserProjectsCount: state => {
+            state.authUser.projectsCount++
+        },
+        decrementAuthUserProjectsCount: state => {
+            state.authUser.projectsCount--
+        },
         setTotalUsersCount: (state, action) => {
             state.totalUsersCount = action.payload
         },
@@ -43,7 +49,8 @@ export const usersSlice = createSlice({
 });
 
 
-export const { pending, stopPending, setAuthUser, setActiveUser, clearActiveUser, setUsers, setTotalUsersCount, reset } = usersSlice.actions;
+export const { pending, stopPending, setAuthUser, setActiveUser, clearActiveUser,
+    setUsers, setTotalUsersCount, incrementAuthUserProjectsCount, decrementAuthUserProjectsCount, reset } = usersSlice.actions;
 
 //selectors
 export const authUser = state => state.user.authUser
@@ -55,6 +62,7 @@ export const activeUser = state => state.user.activeUser
 export const getMyProfile = () => dispatch => {
     dispatch(pending({ action: MY_PROFILE_FETCH }))
     usersApi.getMyProfile().then(res => {
+        console.log(res)
         dispatch(setAuthUser(res))
         dispatch(stopPending({ action: MY_PROFILE_FETCH }))
     }).catch(err => {
