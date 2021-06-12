@@ -7,8 +7,8 @@ const taskApi = {
     newTask(projectId, task) {
         return axiosInstance.post(`projects/${projectId}/tasks`, task).then(response => response.data)
     },
-    getTasks(projectId, page,) {
-        const path = `tasks?page=${page || 1}`
+    getTasks(projectId,skip) {
+        const path = `tasks?skip=${skip || 0}`
         return axiosInstance.get(`projects/${projectId}/${path}`)
     },
     editTask(projectId, taskId, task) {

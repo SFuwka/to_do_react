@@ -106,5 +106,15 @@ export const useStyles = makeStyles((theme) => ({
     taskAnchor: {
         position: 'absolute',
         top: -64
+    },
+    tasksList: {
+        margin: 0,
+        padding: 0,
+        listStyle: 'none'
+    },
+    draggable: {
+
+    },
+    spacer: {
     }
 }))

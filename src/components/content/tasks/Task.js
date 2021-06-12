@@ -17,7 +17,7 @@ import { useHistory } from 'react-router'
 
 
 
-const Task = ({ projectId, task }) => {
+const Task = ({ projectId, item: task }) => {
     const history = useHistory()
     const scrollToRef = useRef(null)
     const [anchorEl, setAnchorEl] = useState(null)
@@ -33,7 +33,7 @@ const Task = ({ projectId, task }) => {
     useEffect(
         () => {
             scrollToRef && scrollToRef.current && scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
-        }, [history.location.state, scrollToRef] 
+        }, [history.location.state, scrollToRef]
     )
 
 

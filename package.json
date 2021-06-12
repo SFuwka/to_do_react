@@ -14,6 +14,7 @@
     "final-form": "^4.20.2",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
+    "react-beautiful-dnd": "^13.1.0",
     "react-colorful": "^5.1.2",
     "react-dom": "^17.0.2",
     "react-final-form": "^6.5.3",
@@ -21,6 +22,9 @@
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-virtualized-auto-sizer": "^1.0.5",
+    "react-window": "^1.8.6",
+    "react-window-infinite-loader": "^1.0.7",
     "reselect": "^4.0.0",
     "socket.io-client": "^4.1.2"
   },

@@ -100,7 +100,7 @@ export const error = state => state.task.error
 export const isFetched = state => state.task.isFetched
 export const taskEditMode = state => state.task.editMode
 export const taskPage = state => state.task.taskPage
-
+export const skipTasks = state => state.task.skipTasks
 //thunks
 export const createTask = (projectId, task) => dispatch => {
     dispatch(pending({ action: CREATE }))
@@ -110,9 +110,9 @@ export const createTask = (projectId, task) => dispatch => {
     })
 }
 
-export const getTasks = (projectId, page) => dispatch => {
+export const getTasks = (projectId, skip) => dispatch => {
     dispatch(pending({ action: TASKS_LOADING }))
-    taskApi.getTasks(projectId, page).then(res => {
+    taskApi.getTasks(projectId, skip).then(res => {
         dispatch(firstLoadComplete())
         if (res.data.tasks) {
             dispatch(setTasks(res.data.tasks))

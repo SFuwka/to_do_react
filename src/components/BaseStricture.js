@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -22,13 +22,14 @@ import { NavLink } from 'react-router-dom';
 import Copyright from './footer/Copyright';
 import ContentSwitch from './content/ContentSwitch';
 import AuthButton from './Auth/AuthButton';
+import Context from './Context';
 
 export default function BaseStricture() {
-    const classes = useStyles();
+    const classes = useStyles()
+    const mainContentRef = useRef()
     const darkTheme = useSelector(darkMode)
     const sideBarCollapse = useSelector(sideBarOpen)
     const dispatch = useDispatch()
-
 
     return (
         <div className={classes.root}>
@@ -76,11 +77,11 @@ export default function BaseStricture() {
                 <Divider />
                 <List>{secondaryListItems}</List>
             </Drawer>
-            <main className={classes.content} id='content'>
+            <main ref={mainContentRef} className={classes.content} id='content'>
                 <div className={classes.contentWraper} >
                     <div className={classes.appBarSpacer} />
                     <Container maxWidth="lg" className={classes.container} >
-                        <ContentSwitch />
+                        <Context.Provider value={mainContentRef}><ContentSwitch /></Context.Provider>
                     </Container>
                     <div className={classes.push}></div>
                 </div>

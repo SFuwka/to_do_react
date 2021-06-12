@@ -7,8 +7,7 @@ import ProjectSkeleton from '../projects/ProjectSkeleton'
 import NewTask from './NewTask'
 import Task from './Task'
 import InfiniteScroll from 'react-infinite-scroll-component'
-
-
+import DragAndDropList from '../../commonComponents/DragAndDropList'
 
 const Tasks = ({ projectId, editable }) => {
     const history = useHistory()
@@ -22,6 +21,7 @@ const Tasks = ({ projectId, editable }) => {
     const handleToggleMenuOpen = () => {
         setNewTaskMenuOpen(prev => !prev)
     }
+
 
     useEffect(
         () => {
@@ -54,8 +54,9 @@ const Tasks = ({ projectId, editable }) => {
         }, [dispatch]
     )
 
+
     const fetchMore = () => {
-        dispatch(getTasks(projectId, page.currentPage))
+        dispatch(getTasks(projectId, tasks.length))
     }
 
     const tasksPreload = () => {
@@ -82,11 +83,9 @@ const Tasks = ({ projectId, editable }) => {
                 next={fetchMore}
                 loader={<ProjectSkeleton />}
                 scrollableTarget='content'
-            > {tasks.map((task, i) => {
-                return (
-                    <Task key={i} projectId={projectId} task={task} />
-                )
-            })} </InfiniteScroll>}
+            >
+                <DragAndDropList projectId={projectId} items={tasks} itemComponent={Task} />
+            </InfiniteScroll>}
         </>
 
     )

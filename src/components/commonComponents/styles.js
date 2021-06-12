@@ -71,4 +71,9 @@ export const useStyles = makeStyles((theme) => ({
             backgroundColor: green[700],
         }
     },
+    itemsList: {
+        padding: 0,
+        margin: 0,
+        listStyle: 'none'
+    }
 }))
