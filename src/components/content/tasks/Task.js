@@ -29,7 +29,6 @@ const Task = ({ projectId, item: task }) => {
     const dispatch = useDispatch()
     const bgColor = task.color ? getContrastColor(task.color) : ''
 
-
     useEffect(
         () => {
             scrollToRef && scrollToRef.current && scrollToRef.current.scrollIntoView({ behavior: 'smooth' })

@@ -44,6 +44,9 @@ export const taskSlice = createSlice({
         firstLoadComplete: state => {
             state.isFetched = true
         },
+        updateTasksOrder: (state, action) => {
+            state.tasks = action.payload
+        },
         setTasks: (state, action) => {
             state.tasks = [...state.tasks, ...action.payload]
         },
@@ -91,7 +94,8 @@ export const taskSlice = createSlice({
 })
 
 export const { pending, stopPending, setTasks, addTaskToBegining, turnEditModeOn, turnEditModeOff,
-    deleteTask, updateTask, updateTaskCompleteStatus, reset, firstLoadComplete, setPagesCount, incrementPage } = taskSlice.actions
+    deleteTask, updateTask, updateTaskCompleteStatus, updateTasksOrder,
+    reset, firstLoadComplete, setPagesCount, incrementPage } = taskSlice.actions
 
 //selectors
 export const isFetching = state => state.task.pending
@@ -133,6 +137,15 @@ export const editTask = (projectId, taskId, task) => dispatch => {
             dispatch(stopPending({ action: EDIT, id: taskId }))
             dispatch(turnEditModeOff(taskId))
         }
+    })
+}
+
+export const changeTasksOrder = (projectId, tasks) => dispatch => {
+    const newOrder = tasks.map((task, i) => {
+        return { ...task, order: i }
+    })
+    taskApi.updateTasksOrder(projectId, newOrder).then(res => {
+
     })
 }
 

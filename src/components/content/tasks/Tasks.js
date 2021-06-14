@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
-import { getTasks, isFetched, isFetching, reset, taskPage, tasks as tasksSelector } from '../../../features/task/tasksSlice'
+import { changeTasksOrder, getTasks, isFetched, isFetching, reset, taskPage, tasks as tasksSelector } from '../../../features/task/tasksSlice'
 import TopControll from '../../commonComponents/TopControll'
 import ProjectSkeleton from '../projects/ProjectSkeleton'
 import NewTask from './NewTask'
@@ -40,7 +40,7 @@ const Tasks = ({ projectId, editable }) => {
                 return task._id === history.location.state.taskId
             })
             if (!t && !pending.tasksLoading && history.location.state.taskId && page.currentPage <= page.totalPagesCount) {
-                dispatch(getTasks(projectId, page.currentPage))
+                dispatch(getTasks(projectId, tasks.length))
             }
             if (t) setLookingForTask(false)
         }, [history.location.state, tasks, dispatch, page.currentPage, pending.tasksLoading, projectId, page.totalPagesCount]
@@ -67,6 +67,11 @@ const Tasks = ({ projectId, editable }) => {
         return result
     }
 
+    const onChange = (items) => {
+        console.log(items)
+        dispatch(changeTasksOrder(projectId, items))
+    }
+
 
     if (!isFirstLoadComplete) return tasksPreload()
     if (lookingForTask) return tasksPreload()
@@ -84,7 +89,13 @@ const Tasks = ({ projectId, editable }) => {
                 loader={<ProjectSkeleton />}
                 scrollableTarget='content'
             >
-                <DragAndDropList projectId={projectId} items={tasks} itemComponent={Task} />
+                <DragAndDropList
+                    onChange={onChange}
+                    projectId={projectId}
+                    listItems={tasks}
+                    itemComponent={Task}
+                    animationDuration={200}
+                    animationEasing='ease-out' />
             </InfiniteScroll>}
         </>
 
