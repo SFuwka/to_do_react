@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useStyles } from './styles'
 
-const DragAndDropList = ({ listItems, itemComponent: ItemComponent, onChange, animationDuration, animationEasing, ...rest }) => {
+const DragAndDropList = ({ listItems, isFetching, itemComponent: ItemComponent, onChange, animationDuration, animationEasing, ...rest }) => {
     const [items, setItems] = useState(listItems)
     const classes = useStyles()
     const [dragging, setDragging] = useState()
@@ -13,7 +13,7 @@ const DragAndDropList = ({ listItems, itemComponent: ItemComponent, onChange, an
     const draggedItemPosition = useRef()
     const dragMoveHandler = useRef()
     const itemShiftsY = useRef()
-    console.log(itemShiftsY)
+
 
     useEffect(() => {
         setItems(listItems)
@@ -35,9 +35,9 @@ const DragAndDropList = ({ listItems, itemComponent: ItemComponent, onChange, an
 
 
     const onDragStart = useCallback((node, y, touch) => {
-        if (dragging) {
-            return
-        }
+        if (isFetching) return
+        if (dragging) return
+
         if (items.length === 1) {
             return
         }
@@ -62,7 +62,7 @@ const DragAndDropList = ({ listItems, itemComponent: ItemComponent, onChange, an
             shiftY: 0
         }
         itemShiftsY.current = items.map(_ => 0)
-    }, [dragging, items])
+    }, [dragging, items, isFetching])
 
     const onTouchStart = useCallback((event) => {
         if (event.touches.length > 1) {
@@ -172,7 +172,7 @@ const DragAndDropList = ({ listItems, itemComponent: ItemComponent, onChange, an
             itemsOrder.current = newItemsOrder
             const finalItemsOrder = (newItemsOrder.map(i => items[i]))
             setItems(finalItemsOrder)
-            onChange(finalItemsOrder)
+            onChange(finalItemsOrder, draggedItemPosition.current)
         }, animationDuration)
     }, [items, animationDuration, onChange])
 

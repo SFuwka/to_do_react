@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { COMPLETE_STATUS, CREATE, DELETE, EDIT, TASKS_LOADING } from '../actions';
+import { COMPLETE_STATUS, CREATE, DELETE, EDIT, TASKS_LOADING, ORDER_CHANGE } from '../actions';
 import taskApi from './apiCalls';
 
 const TASKS_PER_REQUEST = 20
@@ -12,6 +12,7 @@ const initialState = {
         delete: [],
         edit: [],
         completeStatus: [],
+        orderChange: false,
     },
     taskPage: {
         currentPage: 1,
@@ -140,12 +141,15 @@ export const editTask = (projectId, taskId, task) => dispatch => {
     })
 }
 
-export const changeTasksOrder = (projectId, tasks) => dispatch => {
+export const changeTasksOrder = (projectId, tasks, order) => dispatch => {
+    if (order.new === order.previous) return
+    dispatch(pending({ action: ORDER_CHANGE }))
     const newOrder = tasks.map((task, i) => {
         return { ...task, order: i }
     })
-    taskApi.updateTasksOrder(projectId, newOrder).then(res => {
-
+    dispatch(updateTasksOrder(newOrder))
+    taskApi.updateTasksOrder(projectId, { prev: order.previous, new: order.new }).then(res => {
+        dispatch(stopPending({ action: ORDER_CHANGE }))
     })
 }
 

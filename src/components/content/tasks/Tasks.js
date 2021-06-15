@@ -21,7 +21,7 @@ const Tasks = ({ projectId, editable }) => {
     const handleToggleMenuOpen = () => {
         setNewTaskMenuOpen(prev => !prev)
     }
-
+    console.log(tasks.map(task => ({ taskName: task.taskName, order: task.order })))
 
     useEffect(
         () => {
@@ -67,9 +67,8 @@ const Tasks = ({ projectId, editable }) => {
         return result
     }
 
-    const onChange = (items) => {
-        console.log(items)
-        dispatch(changeTasksOrder(projectId, items))
+    const onChange = (items, order) => {
+        dispatch(changeTasksOrder(projectId, items, order))
     }
 
 
@@ -92,6 +91,7 @@ const Tasks = ({ projectId, editable }) => {
                 <DragAndDropList
                     onChange={onChange}
                     projectId={projectId}
+                    isFetching={pending.orderChange}
                     listItems={tasks}
                     itemComponent={Task}
                     animationDuration={200}
