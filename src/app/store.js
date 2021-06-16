@@ -7,12 +7,14 @@ import projectReducer from '../features/project/projectSlice'
 import taskReducer from '../features/task/tasksSlice'
 import userReducer from '../features/users/usersSlice'
 import searchReducer from '../features/search/searchSlice'
+import forgotPasswordReducer from '../features/auth/forgotPasswordSlice'
 
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
     login: loginReducer,
     signUp: signUpReducer,
+    forgotPassword: forgotPasswordReducer,
     auth: authReducer,
     user: userReducer,
     project: projectReducer,

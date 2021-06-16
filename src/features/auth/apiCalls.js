@@ -13,6 +13,9 @@ const authApi = {
     },
     signUp(name, surname, alias, email, password) {
         return axiosInstance.post('signup', { name, surname, alias, email, password }, { withCredentials: false })
+    },
+    forgotPassword(email) {
+        return axiosInstance.put('login/forgotPassword', {email})
     }
 }
 

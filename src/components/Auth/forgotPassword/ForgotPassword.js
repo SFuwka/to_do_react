@@ -2,24 +2,23 @@ import React from 'react';
 import { Form, Field } from 'react-final-form'
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 import Typography from '@material-ui/core/Typography';
 import { useStyles } from '../styles';
 import { NavLink, Redirect } from 'react-router-dom';
 import { authLink } from '../../commonStyles';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, progress, error, clearError } from '../../../features/auth/loginSlice';
-import { composeValidators, isValidEmail, requiredEmail, requiredPassword } from '../../form/validators';
-import { CheckBox, Input } from '../../form/fields';
+import { composeValidators, isValidEmail, requiredEmail } from '../../form/validators';
+import { Input } from '../../form/fields';
 import SubmitButton from '../SubmitButton';
 import { isAuthorized } from '../../../features/auth/authSlice';
+import { forgotPasswordHandler, clearError, error, progress } from '../../../features/auth/forgotPasswordSlice';
 
 
 
-const LoginForm = (props) => {
+const ForgotPasswordForm = (props) => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const pending = useSelector(progress)
@@ -44,33 +43,7 @@ const LoginForm = (props) => {
                 >
                 </Field>
             </div>
-
-            <div>
-                <Field
-                    validate={requiredPassword}
-                    label='Password'
-                    type='password'
-                    autoComplete='current-password'
-                    name='password'
-                    component={Input}
-                    fullWidth={true}
-                    err={serverError}
-                    clearError={clearErr}
-                >
-                </Field>
-            </div>
-
-            <div>
-                <FormControlLabel label='Remember me' control={
-                    <Field
-                        type='checkBox'
-                        name='rememberMe'
-                        component={CheckBox}
-                    />
-                }>
-                </FormControlLabel>
-            </div>
-            <SubmitButton buttonText='Login' progress={pending}></SubmitButton>
+            <SubmitButton buttonText='Send' progress={pending}></SubmitButton>
         </form>
 
 
@@ -78,17 +51,17 @@ const LoginForm = (props) => {
 }
 
 
-const Login = () => {
+const ForgotPassword = () => {
     const classes = useStyles();
     const dispatch = useDispatch()
     const isAuth = useSelector(isAuthorized)
 
-    if(isAuth){
-        return <Redirect to='/'/>
+    if (isAuth) {
+        return <Redirect to='/' />
     }
 
     const onSubmit = (values) => {
-        dispatch(login(values.email, values.password, values.rememberMe || false))
+        dispatch(forgotPasswordHandler(values.email))
     }
 
 
@@ -99,16 +72,16 @@ const Login = () => {
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
                     <Avatar size='small' className={classes.avatar}>
-                        <LockOutlinedIcon />
+                        <AssignmentLateIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Forgot password
                     </Typography>
-                    <Form onSubmit={onSubmit} component={LoginForm} />
+                    <Form onSubmit={onSubmit} component={ForgotPasswordForm} />
                     <Grid container>
                         <Grid item xs>
-                            <NavLink style={authLink} to="/forgotpassword" variant="body2">
-                                Forgot password?
+                            <NavLink style={authLink} to="/login" variant="body2">
+                                Login
                              </NavLink>
                         </Grid>
                         <Grid item>
@@ -121,4 +94,4 @@ const Login = () => {
     );
 }
 
-export default Login
+export default ForgotPassword
