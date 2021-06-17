@@ -7,62 +7,73 @@ import Grid from '@material-ui/core/Grid';
 import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 import Typography from '@material-ui/core/Typography';
 import { useStyles } from '../styles';
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink, Redirect, useLocation } from 'react-router-dom';
 import { authLink } from '../../commonStyles';
 import { useDispatch, useSelector } from 'react-redux';
-import { composeValidators, isValidEmail, requiredEmail } from '../../form/validators';
+import { composeValidators, paswordContainNumbersAndLetters, passwordLength, requiredPassword, passwordConfirmation } from '../../form/validators';
 import { Input } from '../../form/fields';
 import SubmitButton from '../SubmitButton';
 import { isAuthorized } from '../../../features/auth/authSlice';
-import { forgotPasswordHandler, clearError, error, progress, emailSended } from '../../../features/auth/forgotPasswordSlice';
+import { passwordChanged, progress, resetPassword } from '../../../features/auth/forgotPasswordSlice';
 
 
 
-const ForgotPasswordForm = (props) => {
+const ResetPasswordForm = (props) => {
     const classes = useStyles()
-    const dispatch = useDispatch()
     const pending = useSelector(progress)
-    const serverError = useSelector(error)
 
-    const clearErr = () => {
-        dispatch(clearError())
-    }
+
     return (
         <form onSubmit={props.handleSubmit} className={classes.form}>
             <div>
                 <Field
-                    validate={composeValidators(requiredEmail, isValidEmail)}
-                    label='Email'
-                    autoComplete='email'
-                    name='email'
+                    validate={composeValidators(requiredPassword, paswordContainNumbersAndLetters, passwordLength)}
+                    label='New password'
+                    name='password'
+                    type='password'
+                    autoComplete='new-password'
                     component={Input}
                     autoFocus={true}
                     fullWidth={true}
-                    err={serverError}
-                    clearError={clearErr}
+                >
+                </Field>
+            </div>
+            <div>
+                <Field
+                    validate={requiredPassword}
+                    autoComplete='new-password'
+                    label='Confirm password'
+                    type='password'
+                    name='passwordConfirmation'
+                    component={Input}
+                    fullWidth={true}
                 >
                 </Field>
             </div>
             <SubmitButton buttonText='Send' progress={pending}></SubmitButton>
-        </form>
+        </form >
 
 
     )
 }
 
 
-const ForgotPassword = () => {
+const ResetPassword = () => {
     const classes = useStyles();
     const dispatch = useDispatch()
     const isAuth = useSelector(isAuthorized)
-    const emailReady = useSelector(emailSended)
+    const location = useLocation()
+    const resetCode = location.pathname.split('/')[2]
+    const isPasswordChanged = useSelector(passwordChanged)
 
+    if (!resetCode) return <Redirect to='/login' />
+    if (isPasswordChanged) return <Redirect to='/login' />
     if (isAuth) {
         return <Redirect to='/' />
     }
 
     const onSubmit = (values) => {
-        dispatch(forgotPasswordHandler(values.email))
+        dispatch(resetPassword(values.password, resetCode))
     }
 
 
@@ -76,19 +87,14 @@ const ForgotPassword = () => {
                         <AssignmentLateIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Forgot password
+                        Reset password
                     </Typography>
-                    {emailReady
-                        ? <Typography style={{ paddingTop: 20, paddingBottom: 20 }} align='center' variant='h6' component='h6' ><em>Please check your email to continue</em></Typography>
-                        : <Form onSubmit={onSubmit} component={ForgotPasswordForm} />}
+                    <Form validate={passwordConfirmation} onSubmit={onSubmit} component={ResetPasswordForm} />
                     <Grid container>
                         <Grid item xs>
                             <NavLink style={authLink} to="/login" variant="body2">
                                 Login
                              </NavLink>
-                        </Grid>
-                        <Grid item>
-                            Don't have an account? <NavLink style={authLink} to="/signup">Sign Up</NavLink>
                         </Grid>
                     </Grid>
                 </div>
@@ -97,4 +103,4 @@ const ForgotPassword = () => {
     );
 }
 
-export default ForgotPassword
+export default ResetPassword

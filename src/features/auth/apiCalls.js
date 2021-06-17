@@ -15,7 +15,10 @@ const authApi = {
         return axiosInstance.post('signup', { name, surname, alias, email, password }, { withCredentials: false })
     },
     forgotPassword(email) {
-        return axiosInstance.put('login/forgotPassword', {email})
+        return axiosInstance.post('login/forgotPassword', { email })
+    },
+    resetPassword(password, resetCode) {
+        return axiosInstance.put(`login/resetPassword`, { password, resetCode })
     }
 }
 

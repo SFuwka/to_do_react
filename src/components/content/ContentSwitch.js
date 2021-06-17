@@ -11,6 +11,7 @@ import MyProfile from './users/MyProfile'
 import ProjectPage from './projects/ProjectPage'
 import Profile from './users/Profile'
 import ForgotPassword from '../Auth/forgotPassword/ForgotPassword'
+import ResetPassword from '../Auth/forgotPassword/ResetPassword'
 
 const ContentSwitch = () => {
     const progress = useSelector(isFetching)
@@ -21,6 +22,7 @@ const ContentSwitch = () => {
         <Switch>
             <Route path='/login' component={Login} />
             <Route path='/signup' component={SignUp} />
+            <Route path='/resetPassword' component={ResetPassword} />
             <Route path='/forgotpassword' component={ForgotPassword} />
             <Route exact path='/projects' render={() => <Projects key={new Date()} />} />
             <Route path='/projects/:projectId' component={ProjectPage} />
