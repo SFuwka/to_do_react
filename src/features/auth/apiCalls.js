@@ -3,6 +3,7 @@ import axiosInstance from '../axiosSettings'
 const authApi = {
 
     authMe() {
+        console.log(process.env.NODE_ENV)
         return axiosInstance.get('authme').then(response => response.data)
     },
     logout() {
