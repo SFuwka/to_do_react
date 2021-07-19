@@ -36,9 +36,11 @@ export const usersSlice = createSlice({
             state.users = [...state.users, ...action.payload]
         },
         incrementAuthUserProjectsCount: state => {
+            if (!state.authUser) return
             state.authUser.projectsCount++
         },
         decrementAuthUserProjectsCount: state => {
+            if (!state.authUser) return
             state.authUser.projectsCount--
         },
         setTotalUsersCount: (state, action) => {

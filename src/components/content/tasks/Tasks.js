@@ -21,7 +21,7 @@ const Tasks = ({ projectId, editable }) => {
     const handleToggleMenuOpen = () => {
         setNewTaskMenuOpen(prev => !prev)
     }
-    console.log(tasks.map(task => ({ taskName: task.taskName, order: task.order })))
+    //console.log(tasks.map(task => ({ taskName: task.taskName, order: task.order })))
 
     useEffect(
         () => {

@@ -110,6 +110,7 @@ export const createProject = project => dispatch => {
         dispatch(incrementAuthUserProjectsCount())
         dispatch(stopPending({ action: CREATE }))
     }).catch(error => {
+        console.log(error)
         dispatch(failure(error.response.data))
     })
 }
